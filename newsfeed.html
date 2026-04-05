@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>News Feed – Kash OS</title>
+  <style>
+    :root {
+      --primary: #2e72ef;
+      --sidebar: #21243a;
+      --sidebar-accent: #21315f;
+      --bg: #f7faff;
+      --white: #fff;
+      --gray: #e7eaf6;
+      --text: #2e3652;
+      --muted: #6a768d;
+    }
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+    }
+    .sidebar {
+      width: 210px;
+      background: var(--sidebar);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .sidebar .logo {
+      font-weight: 700;
+      font-size: 1.3rem;
+      padding: 2rem 1.5rem 1rem 1.5rem;
+      letter-spacing: -1px;
+    }
+    .sidebar nav {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      margin-top: 1rem;
+    }
+    .sidebar nav a {
+      text-decoration: none;
+      color: #cfd8ef;
+      padding: 0.8rem 1.6rem;
+      transition: background .13s;
+      border-left: 4px solid transparent;
+      font-size: 1.06rem;
+      margin-bottom: 2px;
+      border-radius: 0 8px 8px 0;
+    }
+    .sidebar nav a.active, .sidebar nav a:hover {
+      background: var(--sidebar-accent);
+      border-left: 4px solid var(--primary);
+      color: #fff;
+    }
+    .sidebar .logout {
+      padding: 1rem 1.6rem;
+      border-top: 1px solid #2a3257;
+      color: #b9bfff;
+      cursor: pointer;
+      background: none;
+      font-size: 1rem;
+      outline: none;
+      border: none;
+      margin-top: auto;
+      text-align: left;
+    }
+    .main {
+      flex: 1;
+      padding: 2.7rem 2.7rem 2rem 2.7rem;
+      background: var(--bg);
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .headerbar {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--white);
+      padding: 1rem 1.6rem;
+      margin-bottom: 2.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px 0 rgba(46,114,239,.05);
+      border: 1px solid var(--gray);
+    }
+    .news-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+      max-width: 680px;
+    }
+    .news-card {
+      background: var(--white);
+      border-radius: 10px;
+      border: 1px solid var(--gray);
+      padding: 1.1rem 1.4rem;
+      box-shadow: 0 1px 6px rgba(60,80,170,0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .news-source {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--primary);
+    }
+    .news-title {
+      font-size: 1.07rem;
+      font-weight: 600;
+    }
+    .news-summary {
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+    .news-date {
+      font-size: 0.82rem;
+      color: #aab;
+      margin-top: 0.2rem;
+    }
+    @media (max-width: 760px) {
+      .sidebar { display: none; }
+      .main { padding: 1rem 1vw; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo">Kash OS</div>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="profile.html">Profile</a>
+      <a href="dashboard.html#applist" class="active">App List</a>
+    </nav>
+    <button class="logout">Log Out</button>
+  </div>
+  <div class="main">
+    <div class="headerbar">
+      <span>📰 News Feed</span>
+    </div>
+    <div class="news-list">
+      <div class="news-card">
+        <div class="news-source">Technology · Bing News</div>
+        <div class="news-title">AI Assistants Reshape How We Work in 2026</div>
+        <div class="news-summary">From writing to coding, artificial intelligence tools are becoming everyday companions for millions of professionals worldwide.</div>
+        <div class="news-date">April 5, 2026</div>
+      </div>
+      <div class="news-card">
+        <div class="news-source">Business · Google News</div>
+        <div class="news-title">Cloud Storage Market Hits Record Growth</div>
+        <div class="news-summary">Demand for secure, fast document storage continues to surge, with enterprises and individuals alike seeking privacy-first solutions.</div>
+        <div class="news-date">April 4, 2026</div>
+      </div>
+      <div class="news-card">
+        <div class="news-source">Science · Bing News</div>
+        <div class="news-title">New Privacy Standards Proposed for Mobile Operating Systems</div>
+        <div class="news-summary">Regulators are pushing for stronger default privacy protections in mobile OS platforms, citing rising concerns over data collection.</div>
+        <div class="news-date">April 3, 2026</div>
+      </div>
+      <div class="news-card">
+        <div class="news-source">World · Google News</div>
+        <div class="news-title">Open-Source Software Adoption Grows Among Enterprises</div>
+        <div class="news-summary">More companies are turning to open-source solutions for reliability, transparency, and cost savings across their tech stacks.</div>
+        <div class="news-date">April 2, 2026</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
