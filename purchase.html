@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Purchase Kash OS – Get Your License</title>
+  <style>
+    :root {
+      --primary: #2e72ef;
+      --primary-dark: #17469a;
+      --sidebar: #21243a;
+      --bg: #f7faff;
+      --white: #fff;
+      --gray: #e7eaf6;
+      --text: #2e3652;
+      --muted: #6a768d;
+      --border: #cad3f5;
+      --accent: #e8f0ff;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+      height: 60px;
+      box-shadow: 0 1px 8px rgba(46,114,239,.07);
+    }
+    .nav-logo {
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: var(--primary);
+      text-decoration: none;
+      letter-spacing: -1px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      margin: 0; padding: 0;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.97rem;
+      font-weight: 500;
+      transition: color .13s;
+    }
+    .nav-links a:hover { color: var(--primary); }
+    .nav-cta a {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.97rem;
+      padding: 0.48rem 1.25rem;
+      border-radius: 7px;
+      transition: background .13s;
+    }
+    .nav-cta a:hover { background: var(--primary-dark); }
+
+    /* HERO STRIP */
+    .page-hero {
+      background: linear-gradient(135deg, #edf2ff 0%, #f7faff 55%, #e8eeff 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 4rem 2rem 3rem;
+      text-align: center;
+    }
+    .page-hero .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--primary);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      padding: 0.3rem 1rem;
+      border-radius: 99px;
+      border: 1px solid var(--border);
+      margin-bottom: 1.2rem;
+    }
+    .page-hero h1 {
+      font-size: clamp(1.8rem, 4vw, 2.7rem);
+      font-weight: 800;
+      color: var(--sidebar);
+      margin: 0 0 0.8rem;
+    }
+    .page-hero h1 span { color: var(--primary); }
+    .page-hero p {
+      color: var(--muted);
+      font-size: 1.08rem;
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* MAIN LAYOUT */
+    .main-grid {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1.35fr;
+      gap: 3.5rem;
+      align-items: start;
+    }
+    @media (max-width: 760px) {
+      .main-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+
+    /* PLAN CARDS */
+    .plans { display: flex; flex-direction: column; gap: 1.2rem; }
+    .plan-card {
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem 1.6rem;
+      cursor: pointer;
+      transition: border-color .15s, box-shadow .15s;
+      position: relative;
+    }
+    .plan-card.selected,
+    .plan-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 4px 20px rgba(46,114,239,0.13);
+    }
+    .plan-card.featured {
+      border-color: var(--primary);
+    }
+    .plan-badge {
+      position: absolute;
+      top: -12px; right: 18px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      padding: 0.22rem 0.85rem;
+      border-radius: 99px;
+    }
+    .plan-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .plan-name { font-weight: 700; font-size: 1.07rem; }
+    .plan-price {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .plan-price span { font-size: 0.85rem; font-weight: 500; color: var(--muted); }
+    .plan-desc {
+      margin-top: 0.5rem;
+      font-size: 0.93rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .plan-features {
+      margin: 0.9rem 0 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .plan-features li {
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+    .plan-features li::before { content: "✓ "; color: var(--primary); font-weight: 700; }
+
+    /* FORM CARD */
+    .form-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2.2rem 2rem;
+      box-shadow: 0 2px 20px rgba(46,114,239,0.07);
+    }
+    .form-card h2 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin: 0 0 0.3rem;
+    }
+    .form-card .form-sub {
+      font-size: 0.92rem;
+      color: var(--muted);
+      margin-bottom: 1.6rem;
+    }
+    .form-group { margin-bottom: 1.1rem; }
+    .form-group label {
+      display: block;
+      font-size: 0.87rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.62rem 0.9rem;
+      border: 1.5px solid var(--border);
+      border-radius: 7px;
+      font-size: 1rem;
+      font-family: inherit;
+      color: var(--text);
+      background: var(--bg);
+      outline: none;
+      transition: border-color .13s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--primary); background: #fff; }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--gray);
+      margin: 1.4rem 0;
+    }
+    .order-summary {
+      background: var(--accent);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.4rem;
+    }
+    .order-summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.95rem;
+    }
+    .order-summary-row.total {
+      font-weight: 800;
+      font-size: 1.05rem;
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--border);
+      color: var(--primary);
+    }
+    .submit-btn {
+      display: block;
+      width: 100%;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.85rem;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .13s;
+      text-align: center;
+    }
+    .submit-btn:hover { background: var(--primary-dark); }
+    .form-legal {
+      text-align: center;
+      margin-top: 0.9rem;
+      font-size: 0.82rem;
+      color: #aab2cc;
+      line-height: 1.5;
+    }
+
+    /* SUCCESS STATE */
+    .success-card {
+      display: none;
+      text-align: center;
+      padding: 2.5rem 1rem;
+    }
+    .success-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+    }
+    .success-card h2 { font-size: 1.5rem; font-weight: 800; margin: 0 0 0.6rem; }
+    .success-card p { color: var(--muted); font-size: 1rem; margin: 0 0 1.5rem; }
+    .success-card a {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.65rem 1.8rem;
+      border-radius: 8px;
+      transition: background .13s;
+    }
+    .success-card a:hover { background: var(--primary-dark); }
+
+    /* TRUST ROW */
+    .trust-row {
+      max-width: 1040px;
+      margin: 0 auto 4rem;
+      padding: 0 2rem;
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      padding: 0.5rem 1.2rem;
+      font-size: 0.9rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+    .trust-item .ti { font-size: 1.1rem; }
+
+    /* FOOTER */
+    footer {
+      background: var(--sidebar);
+      border-top: 1px solid #2a3257;
+      padding: 2rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    footer .footer-logo { color: #cfd8ef; font-weight: 700; font-size: 1.05rem; }
+    footer .footer-links { display: flex; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
+    footer .footer-links a { color: #8a9ac5; font-size: 0.9rem; text-decoration: none; }
+    footer .footer-links a:hover { color: #fff; }
+    footer .footer-copy { color: #8a9ac5; font-size: 0.85rem; }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .page-hero { padding: 3rem 1.3rem 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">Kash OS</a>
+    <ul class="nav-links">
+      <li><a href="index.html#features">Features</a></li>
+      <li><a href="index.html#apps">Apps</a></li>
+      <li><a href="index.html#pricing">Pricing</a></li>
+      <li><a href="phone.html">Kash Phone</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="dashboard.html">Try Demo</a>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="badge">One-Time Purchase · No Subscription</div>
+    <h1>Get Your <span>Kash OS</span> License</h1>
+    <p>Simple, honest pricing. Pay once and own it. Full updates included, no hidden fees.</p>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main-grid">
+
+    <!-- LEFT: Plans -->
+    <div>
+      <h2 style="font-size:1.1rem;font-weight:700;margin:0 0 1.1rem;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;">Choose a plan</h2>
+      <div class="plans" id="plans">
+
+        <div class="plan-card" data-plan="basic" data-price="0" data-label="Basic – Free" onclick="selectPlan(this)">
+          <div class="plan-header">
+            <span class="plan-name">Basic</span>
+            <span class="plan-price">Free</span>
+          </div>
+          <p class="plan-desc">Try Kash OS with no commitment. Access the dashboard and core apps.</p>
+          <ul class="plan-features">
+            <li>Dashboard access</li>
+            <li>Calculator app</li>
+            <li>News Feed</li>
+            <li>Community support</li>
+          </ul>
+        </div>
+
+        <div class="plan-card featured selected" data-plan="pro" data-price="49" data-label="Pro – $49" onclick="selectPlan(this)">
+          <div class="plan-badge">Most Popular</div>
+          <div class="plan-header">
+            <span class="plan-name">Pro</span>
+            <span class="plan-price">$49 <span>one-time</span></span>
+          </div>
+          <p class="plan-desc">The full Kash OS experience for individuals and professionals.</p>
+          <ul class="plan-features">
+            <li>Everything in Basic</li>
+            <li>Doc Store</li>
+            <li>Profile management</li>
+            <li>Priority support</li>
+            <li>Kash Phone pairing</li>
+          </ul>
+        </div>
+
+        <div class="plan-card" data-plan="team" data-price="149" data-label="Team (5 seats) – $149" onclick="selectPlan(this)">
+          <div class="plan-header">
+            <span class="plan-name">Team <span style="font-size:.85rem;font-weight:500;color:var(--muted);">5 seats</span></span>
+            <span class="plan-price">$149 <span>one-time</span></span>
+          </div>
+          <p class="plan-desc">Everything in Pro for up to 5 users under one organization.</p>
+          <ul class="plan-features">
+            <li>Everything in Pro</li>
+            <li>5 user licenses</li>
+            <li>Centralized admin dashboard</li>
+            <li>Dedicated support</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT: Order form -->
+    <div class="form-card" id="form-card">
+      <h2>Complete your order</h2>
+      <p class="form-sub">We'll email your license key within minutes.</p>
+
+      <form id="order-form" onsubmit="handleOrder(event)" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fname">First name</label>
+            <input type="text" id="fname" placeholder="Jane" required>
+          </div>
+          <div class="form-group">
+            <label for="lname">Last name</label>
+            <input type="text" id="lname" placeholder="Smith" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input type="email" id="email" placeholder="jane@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="plan-select">License plan</label>
+          <select id="plan-select" onchange="selectPlanByValue(this.value)">
+            <option value="basic">Basic – Free</option>
+            <option value="pro" selected>Pro – $49 one-time</option>
+            <option value="team">Team (5 seats) – $149 one-time</option>
+          </select>
+        </div>
+        <div class="form-group" id="payment-fields">
+          <label for="card">Card number</label>
+          <input type="text" id="card" placeholder="1234 5678 9012 3456" maxlength="19" oninput="fmtCard(this)" required>
+          <div class="form-row" style="margin-top:.7rem">
+            <div class="form-group" style="margin:0">
+              <label for="expiry">Expiry</label>
+              <input type="text" id="expiry" placeholder="MM / YY" maxlength="7" oninput="fmtExpiry(this)" required>
+            </div>
+            <div class="form-group" style="margin:0">
+              <label for="cvv">CVV</label>
+              <input type="text" id="cvv" placeholder="123" maxlength="4" required>
+            </div>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="order-summary" id="order-summary">
+          <div class="order-summary-row">
+            <span id="summary-plan">Pro License</span>
+            <span id="summary-price">$49.00</span>
+          </div>
+          <div class="order-summary-row total">
+            <span>Total due today</span>
+            <span id="summary-total">$49.00</span>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submit-btn">Purchase Now →</button>
+        <p class="form-legal">🔒 Your information is encrypted and never stored on our servers.<br>
+        By purchasing you agree to our <a href="#" style="color:var(--primary)">Terms of Service</a>.</p>
+      </form>
+
+      <div class="success-card" id="success-card">
+        <div class="success-icon">🎉</div>
+        <h2>Order received!</h2>
+        <p>Thanks for purchasing Kash OS. Check your inbox — your license key will arrive within a few minutes.</p>
+        <a href="dashboard.html">Open Dashboard</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TRUST ROW -->
+  <div class="trust-row">
+    <div class="trust-item"><span class="ti">🔒</span> Secure checkout</div>
+    <div class="trust-item"><span class="ti">📧</span> Instant license delivery</div>
+    <div class="trust-item"><span class="ti">♾️</span> Lifetime updates</div>
+    <div class="trust-item"><span class="ti">🙋</span> Priority support</div>
+    <div class="trust-item"><span class="ti">↩️</span> 30-day money-back guarantee</div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-logo">Kash OS</span>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#features">Features</a></li>
+      <li><a href="index.html#pricing">Pricing</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="phone.html">Kash Phone</a></li>
+    </ul>
+    <span class="footer-copy">&copy; 2026 Kash OS. All rights reserved.</span>
+  </footer>
+
+  <script>
+    const PLANS = {
+      basic:  { label: 'Basic License',        price: 0   },
+      pro:    { label: 'Pro License',           price: 49  },
+      team:   { label: 'Team License (5 seats)', price: 149 },
+    };
+
+    let currentPlan = 'pro';
+
+    function updateSummary(plan) {
+      const p = PLANS[plan];
+      document.getElementById('summary-plan').textContent  = p.label;
+      document.getElementById('summary-price').textContent = p.price === 0 ? 'Free' : '$' + p.price + '.00';
+      document.getElementById('summary-total').textContent = p.price === 0 ? '$0.00' : '$' + p.price + '.00';
+      document.getElementById('payment-fields').style.display = p.price === 0 ? 'none' : '';
+      document.getElementById('submit-btn').textContent = p.price === 0 ? 'Get Free Access →' : 'Purchase Now →';
+    }
+
+    function selectPlan(card) {
+      document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      const plan = card.dataset.plan;
+      currentPlan = plan;
+      document.getElementById('plan-select').value = plan;
+      updateSummary(plan);
+    }
+
+    function selectPlanByValue(val) {
+      const card = document.querySelector('.plan-card[data-plan="' + val + '"]');
+      if (card) selectPlan(card);
+    }
+
+    function fmtCard(input) {
+      let v = input.value.replace(/\D/g, '').slice(0, 16);
+      input.value = v.replace(/(.{4})/g, '$1 ').trim();
+    }
+
+    function fmtExpiry(input) {
+      let v = input.value.replace(/\D/g, '').slice(0, 4);
+      if (v.length >= 3) v = v.slice(0,2) + ' / ' + v.slice(2);
+      input.value = v;
+    }
+
+    function handleOrder(e) {
+      e.preventDefault();
+      const fname = document.getElementById('fname').value.trim();
+      const lname = document.getElementById('lname').value.trim();
+      const email = document.getElementById('email').value.trim();
+      if (!fname || !lname || !email) { alert('Please fill in all required fields.'); return; }
+      if (currentPlan !== 'basic') {
+        const card = document.getElementById('card').value.replace(/\s/g,'');
+        if (card.length < 16) { alert('Please enter a valid card number.'); return; }
+      }
+      document.getElementById('order-form').style.display = 'none';
+      document.getElementById('success-card').style.display = 'block';
+    }
+
+    updateSummary('pro');
+  </script>
+</body>
+</html>
