@@ -1,67 +1,487 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kash Phone Prototype Showcase</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        header {
-            background: #007bff;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        .container {
-            max-width: 800px;
-            margin: auto;
-            padding: 20px;
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .device-illustration {
-            text-align: center;
-            margin: 20px 0;
-        }
-        section {
-            margin: 20px 0;
-            padding: 20px;
-            background: #e9ecef;
-            border-radius: 5px;
-        }
-        footer {
-            text-align: center;
-            margin-top: 20px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kash Phone – Prototype Showcase</title>
+  <style>
+    :root {
+      --primary: #2e72ef;
+      --primary-dark: #17469a;
+      --sidebar: #21243a;
+      --bg: #f7faff;
+      --white: #fff;
+      --gray: #e7eaf6;
+      --text: #2e3652;
+      --muted: #6a768d;
+      --border: #cad3f5;
+      --accent: #e8f0ff;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* NAV */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+      height: 60px;
+      box-shadow: 0 1px 8px rgba(46,114,239,.07);
+    }
+    .nav-logo {
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: var(--primary);
+      text-decoration: none;
+      letter-spacing: -1px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      margin: 0; padding: 0;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.97rem;
+      font-weight: 500;
+      transition: color .13s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--primary); }
+    .nav-cta a {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.97rem;
+      padding: 0.48rem 1.25rem;
+      border-radius: 7px;
+      transition: background .13s;
+    }
+    .nav-cta a:hover { background: var(--primary-dark); }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, var(--sidebar) 0%, #2a3a6a 100%);
+      padding: 6rem 2.5rem 5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4rem;
+      flex-wrap: wrap;
+      text-align: left;
+    }
+    .hero-text { max-width: 480px; }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(46,114,239,0.25);
+      color: #a8c4ff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      padding: 0.32rem 1rem;
+      border-radius: 99px;
+      border: 1px solid rgba(46,114,239,0.35);
+      margin-bottom: 1.3rem;
+    }
+    .hero-text h1 {
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      font-weight: 800;
+      color: #fff;
+      margin: 0 0 1rem;
+      line-height: 1.15;
+    }
+    .hero-text h1 span { color: #6ea8ff; }
+    .hero-text p {
+      font-size: 1.1rem;
+      color: #8a9ac5;
+      line-height: 1.65;
+      margin: 0 0 2rem;
+    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-block;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0.68rem 1.8rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background .13s, border-color .13s, color .13s;
+      border: 2px solid transparent;
+    }
+    .btn-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .btn-primary:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
+    .btn-ghost { background: transparent; color: #a8c4ff; border-color: rgba(168,196,255,0.35); }
+    .btn-ghost:hover { background: rgba(168,196,255,0.1); border-color: #a8c4ff; }
+
+    /* PHONE SVG */
+    .phone-visual {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .phone-svg-wrap {
+      filter: drop-shadow(0 12px 40px rgba(46,114,239,0.35));
+    }
+
+    /* SPECS SECTION */
+    .section {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+    .section-label {
+      text-align: center;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 0.7rem;
+    }
+    .section h2 {
+      text-align: center;
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
+      font-weight: 800;
+      color: var(--sidebar);
+      margin: 0 0 0.6rem;
+    }
+    .section-sub {
+      text-align: center;
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin-bottom: 3rem;
+    }
+    .spec-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.4rem;
+    }
+    .spec-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.6rem 1.5rem;
+      box-shadow: 0 1px 8px rgba(46,114,239,0.05);
+      transition: box-shadow .15s, transform .15s;
+    }
+    .spec-card:hover {
+      box-shadow: 0 4px 24px rgba(46,114,239,0.12);
+      transform: translateY(-2px);
+    }
+    .spec-icon { font-size: 2rem; margin-bottom: 0.7rem; }
+    .spec-card h3 { font-size: 1rem; font-weight: 700; margin: 0 0 0.4rem; }
+    .spec-card p { font-size: 0.93rem; color: var(--muted); margin: 0; line-height: 1.5; }
+
+    /* PRIVACY STRIP */
+    .privacy-strip {
+      background: var(--accent);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .privacy-inner {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    @media (max-width: 680px) {
+      .privacy-inner { grid-template-columns: 1fr; gap: 1.5rem; }
+    }
+    .privacy-text h2 { font-size: 1.8rem; font-weight: 800; margin: 0 0 0.8rem; }
+    .privacy-text p { color: var(--muted); font-size: 1rem; line-height: 1.6; margin: 0 0 1.5rem; }
+    .privacy-list {
+      list-style: none;
+      margin: 0; padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .privacy-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.97rem;
+      color: var(--text);
+    }
+    .privacy-list li .check {
+      width: 24px; height: 24px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .privacy-cta {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .privacy-cta .stat-row { display: flex; gap: 2rem; flex-wrap: wrap; }
+    .stat-box {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem 1.5rem;
+      text-align: center;
+      flex: 1;
+      min-width: 100px;
+      box-shadow: 0 1px 6px rgba(46,114,239,0.05);
+    }
+    .stat-num { font-size: 1.8rem; font-weight: 800; color: var(--primary); }
+    .stat-label { font-size: 0.82rem; color: var(--muted); margin-top: 0.15rem; }
+
+    /* NEWSLETTER */
+    .newsletter-section {
+      background: var(--sidebar);
+    }
+    .newsletter-inner {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+    .newsletter-inner h2 { color: #fff; font-size: 1.9rem; font-weight: 800; margin: 0 0 0.7rem; }
+    .newsletter-inner p { color: #8a9ac5; font-size: 1.05rem; margin: 0 0 2rem; }
+    .newsletter-form {
+      display: flex;
+      gap: 0.8rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .newsletter-form input {
+      flex: 1;
+      min-width: 220px;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      border: 1.5px solid #2a3257;
+      background: #2a3257;
+      color: #fff;
+      font-size: 1rem;
+      font-family: inherit;
+      outline: none;
+    }
+    .newsletter-form input::placeholder { color: #8a9ac5; }
+    .newsletter-form input:focus { border-color: var(--primary); }
+    .newsletter-form button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.7rem 1.7rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .13s;
+    }
+    .newsletter-form button:hover { background: var(--primary-dark); }
+
+    /* FOOTER */
+    footer {
+      background: var(--sidebar);
+      border-top: 1px solid #2a3257;
+      padding: 2rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    footer .footer-logo { color: #cfd8ef; font-weight: 700; font-size: 1.05rem; }
+    footer .footer-links { display: flex; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
+    footer .footer-links a { color: #8a9ac5; font-size: 0.9rem; text-decoration: none; }
+    footer .footer-links a:hover { color: #fff; }
+    footer .footer-copy { color: #8a9ac5; font-size: 0.85rem; }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .hero { padding: 3.5rem 1.3rem 3rem; text-align: center; }
+      .hero-actions { justify-content: center; }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Prototype Showcase for Kash Phone</h1>
-    </header>
-    <div class="container">
-        <div class="device-illustration">
-            <svg xmlns="http://www.w3.org/2000/svg" width="200" height="400" viewBox="0 0 200 400">
-                <rect width="200" height="400" fill="#007bff"/>
-                <text x="50%" y="50%" alignment-baseline="middle" text-anchor="middle" fill="white" font-size="24">Kash Phone</text>
-            </svg>
-            <p>Your premium device illustration goes here.</p>
-        </div>
-        <section>
-            <h2>Secure OS & Privacy Features</h2>
-            <p>Our secure operating system is designed to protect your data and privacy. With end-to-end encryption and advanced security features, you can trust Kash Phone to keep your information safe.</p>
-            <p>Subscribe to our newsletter for updates and promotions:</p>
-            <a href="#">Sign Up</a>
-        </section>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">Kash OS</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#features">Features</a></li>
+      <li><a href="index.html#pricing">Pricing</a></li>
+      <li><a href="phone.html" class="active">Kash Phone</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="dashboard.html">Open Dashboard</a>
     </div>
-    <footer>
-        <p>&copy; 2026 Kash Phone</p>
-    </footer>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <div class="hero-badge">Prototype Showcase</div>
+      <h1>Meet the<br><span>Kash Phone</span></h1>
+      <p>Hardware meets privacy. The Kash Phone is engineered from the ground up to run Kash OS — keeping your data secure, your identity private, and your experience seamless.</p>
+      <div class="hero-actions">
+        <a href="https://your-purchase-link.com" class="btn btn-primary">Pre-Order Now</a>
+        <a href="index.html#features" class="btn btn-ghost">Learn More</a>
+      </div>
+    </div>
+    <div class="phone-visual">
+      <div class="phone-svg-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" width="160" height="320" viewBox="0 0 160 320" role="img" aria-label="Kash Phone illustration">
+          <!-- body -->
+          <rect width="160" height="320" rx="28" fill="#21315f"/>
+          <!-- screen -->
+          <rect x="10" y="32" width="140" height="256" rx="14" fill="#1a2040"/>
+          <!-- notch -->
+          <rect x="55" y="18" width="50" height="10" rx="5" fill="#161d36"/>
+          <!-- home bar -->
+          <rect x="55" y="296" width="50" height="5" rx="2.5" fill="#2e72ef" opacity="0.6"/>
+          <!-- Kash OS logo on screen -->
+          <text x="80" y="168" text-anchor="middle" dominant-baseline="middle" fill="#2e72ef" font-size="22" font-weight="800" font-family="Segoe UI, Arial, sans-serif">Kash OS</text>
+          <text x="80" y="192" text-anchor="middle" dominant-baseline="middle" fill="#8a9ac5" font-size="10" font-family="Segoe UI, Arial, sans-serif">Secure · Private · Fast</text>
+          <!-- side buttons -->
+          <rect x="-4" y="100" width="6" height="30" rx="3" fill="#2a3a6a"/>
+          <rect x="-4" y="140" width="6" height="30" rx="3" fill="#2a3a6a"/>
+          <rect x="158" y="110" width="6" height="50" rx="3" fill="#2a3a6a"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPECS -->
+  <div id="specs">
+    <div class="section">
+      <div class="section-label">Hardware Specs</div>
+      <h2>Designed for Security</h2>
+      <p class="section-sub">Every component chosen with privacy in mind.</p>
+      <div class="spec-grid">
+        <div class="spec-card">
+          <div class="spec-icon">📱</div>
+          <h3>6.1" AMOLED Display</h3>
+          <p>Crisp, vibrant 2400×1080 resolution with always-on privacy mode and low blue-light night display.</p>
+        </div>
+        <div class="spec-card">
+          <div class="spec-icon">🔋</div>
+          <h3>4,800 mAh Battery</h3>
+          <p>All-day battery life with optimized Kash OS power management. Fast-charges to 80% in under 45 minutes.</p>
+        </div>
+        <div class="spec-card">
+          <div class="spec-icon">🔒</div>
+          <h3>Hardware Security Module</h3>
+          <p>Dedicated HSM chip for key storage and biometric data. Completely isolated from the main processor.</p>
+        </div>
+        <div class="spec-card">
+          <div class="spec-icon">📷</div>
+          <h3>50MP Privacy Camera</h3>
+          <p>Physical camera kill-switch built into the chassis. No software can access the camera when the switch is off.</p>
+        </div>
+        <div class="spec-card">
+          <div class="spec-icon">💾</div>
+          <h3>256GB Encrypted Storage</h3>
+          <p>Full-disk encryption with user-held keys. Storage is unreadable without your credentials.</p>
+        </div>
+        <div class="spec-card">
+          <div class="spec-icon">🛰️</div>
+          <h3>No Carrier Bloatware</h3>
+          <p>Ships carrier-unlocked with a clean Kash OS install. Your device, your rules.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRIVACY STRIP -->
+  <div class="privacy-strip">
+    <div class="privacy-inner">
+      <div class="privacy-text">
+        <h2>Privacy isn't a feature. It's the foundation.</h2>
+        <p>Unlike mainstream smartphones, the Kash Phone is built so that your data never reaches a third party — not even us.</p>
+        <ul class="privacy-list">
+          <li><span class="check">✓</span> Physical mic & camera kill-switches</li>
+          <li><span class="check">✓</span> No Google Services or telemetry</li>
+          <li><span class="check">✓</span> Open-source Kash OS kernel</li>
+          <li><span class="check">✓</span> End-to-end encrypted calls & messages</li>
+          <li><span class="check">✓</span> Anonymous SIM support</li>
+        </ul>
+      </div>
+      <div class="privacy-cta">
+        <div class="stat-row">
+          <div class="stat-box">
+            <div class="stat-num">0</div>
+            <div class="stat-label">Telemetry trackers</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">256-bit</div>
+            <div class="stat-label">AES encryption</div>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-box" style="flex:1">
+            <div class="stat-num">100%</div>
+            <div class="stat-label">Open-source OS</div>
+          </div>
+          <div class="stat-box" style="flex:1">
+            <div class="stat-num">∞</div>
+            <div class="stat-label">Software updates</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEWSLETTER -->
+  <div class="newsletter-section">
+    <div class="newsletter-inner">
+      <h2>Stay in the loop</h2>
+      <p>Get notified when Kash Phone launches, plus exclusive early-bird pricing for subscribers.</p>
+      <form class="newsletter-form" onsubmit="handleSignup(event)">
+        <input type="email" id="signup-email" placeholder="your@email.com" required>
+        <button type="submit">Sign Up</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-logo">Kash OS</span>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#features">Features</a></li>
+      <li><a href="index.html#pricing">Pricing</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="phone.html">Kash Phone</a></li>
+    </ul>
+    <span class="footer-copy">&copy; 2026 Kash OS. All rights reserved.</span>
+  </footer>
+
+  <script>
+    function handleSignup(e) {
+      e.preventDefault();
+      const email = document.getElementById('signup-email').value;
+      alert('Thanks for signing up, ' + email + '! We\'ll be in touch.');
+      e.target.reset();
+    }
+  </script>
 </body>
 </html>
