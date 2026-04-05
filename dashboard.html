@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kash OS Dashboard Demo</title>
+  <style>
+    :root {
+      --primary: #2e72ef;
+      --sidebar: #21243a;
+      --sidebar-accent: #21315f;
+      --bg: #f7faff;
+      --white: #fff;
+      --gray: #e7eaf6;
+      --text: #2e3652;
+      --muted: #6a768d;
+      --border: #cad3f5;
+    }
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+    }
+    .sidebar {
+      width: 210px;
+      background: var(--sidebar);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .sidebar .logo {
+      font-weight: 700;
+      font-size: 1.3rem;
+      padding: 2rem 1.5rem 1rem 1.5rem;
+      letter-spacing: -1px;
+    }
+    .sidebar nav {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      margin-top: 1rem;
+    }
+    .sidebar nav a {
+      text-decoration: none;
+      color: #cfd8ef;
+      padding: 0.8rem 1.6rem;
+      transition: background .13s;
+      border-left: 4px solid transparent;
+      font-size: 1.06rem;
+      margin-bottom: 2px;
+      border-radius: 0 8px 8px 0;
+    }
+    .sidebar nav a.active, .sidebar nav a:hover {
+      background: var(--sidebar-accent);
+      border-left: 4px solid var(--primary);
+      color: #fff;
+    }
+    .sidebar .logout {
+      padding: 1rem 1.6rem;
+      border-top: 1px solid #2a3257;
+      color: #b9bfff;
+      cursor: pointer;
+      border-left: 0;
+      background: none;
+      font-size: 1rem;
+      outline: none;
+      border: none;
+      margin-top: auto;
+      text-align: left;
+    }
+
+    .main {
+      flex: 1;
+      padding: 2.7rem 2.7rem 2rem 2.7rem;
+      background: var(--bg);
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .headerbar {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--white);
+      padding: 1rem 1.6rem;
+      margin-bottom: 2.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px 0 rgba(46,114,239,.05);
+      border: 1px solid var(--gray);
+    }
+    .headerbar .user-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 100%;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 1rem;
+    }
+    .headerbar .hello {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .dashboard-widgets {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+    .widget {
+      background: var(--white);
+      padding: 1.3rem 2rem;
+      border-radius: 11px;
+      flex: 1 1 200px;
+      box-shadow: 0 1px 6px rgba(60,80,170,0.06);
+      min-width: 200px;
+      border: 1px solid var(--gray);
+      min-height: 90px;
+    }
+    .widget .label {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: .18rem;
+    }
+    .widget .value {
+      font-weight: 700;
+      font-size: 1.45rem;
+      margin-top: 0.1rem;
+      color: var(--primary);
+    }
+    .main-content {
+      flex: 1 1;
+    }
+    .applist {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px,1fr));
+      gap: 1.5rem;
+      margin-top: 1.2rem;
+    }
+    .app-card {
+      background: var(--white);
+      border-radius: 9px;
+      border: 1px solid var(--gray);
+      box-shadow: 0 1px 6px 0 rgba(46,114,239,0.03);
+      padding: 1.1rem 1.3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      min-height: 104px;
+    }
+    .app-card .app-title {
+      font-weight: 600;
+      margin: 0 0 0.24rem;
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+    .app-card .app-desc {
+      color: #667;
+      font-size: 0.98rem;
+      margin: 0 0 0.56rem;
+    }
+    .app-card .app-launch {
+      align-self: flex-end;
+      margin-top: auto;
+      color: #fff;
+      background: var(--primary);
+      border: none;
+      border-radius: 6px;
+      padding: 0.45rem 1.22rem;
+      font-size: .97rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background .12s;
+    }
+    .app-card .app-launch:hover {
+      background: #17469a;
+    }
+    @media (max-width: 760px) {
+      .sidebar {
+        display: none;
+      }
+      .main {
+        padding: 1rem 1vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo">Kash OS</div>
+    <nav>
+      <a href="#" class="active">Dashboard</a>
+      <a href="#">Profile</a>
+      <a href="#">App List</a>
+    </nav>
+    <button class="logout">Log Out</button>
+  </div>
+  <div class="main">
+    <div class="headerbar">
+      <div class="user-avatar">AK</div>
+      <span class="hello">Welcome, askforkris90! 👋</span>
+    </div>
+    <div class="dashboard-widgets">
+      <div class="widget">
+        <div class="label">Active Apps</div>
+        <div class="value">3</div>
+      </div>
+      <div class="widget">
+        <div class="label">Account Tier</div>
+        <div class="value">Pro</div>
+      </div>
+      <div class="widget">
+        <div class="label">Last Login</div>
+        <div class="value">April 5, 2026</div>
+      </div>
+    </div>
+    <div class="main-content">
+      <h2>App List</h2>
+      <div class="applist">
+        <div class="app-card">
+          <div class="app-title">Kash Calculator</div>
+          <div class="app-desc">Simple, logical expression calculator (a * b = c)</div>
+          <a href="#" class="app-launch">Launch</a>
+        </div>
+        <div class="app-card">
+          <div class="app-title">Doc Store</div>
+          <div class="app-desc">Secure cloud document storage and sharing.</div>
+          <a href="#" class="app-launch">Launch</a>
+        </div>
+        <div class="app-card">
+          <div class="app-title">News Feed</div>
+          <div class="app-desc">Curated news from Bing &amp; Google.</div>
+          <a href="#" class="app-launch">Launch</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
