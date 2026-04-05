@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kash Calculator</title>
+  <style>
+    :root {
+      --primary: #2e72ef;
+      --sidebar: #21243a;
+      --sidebar-accent: #21315f;
+      --bg: #f7faff;
+      --white: #fff;
+      --gray: #e7eaf6;
+      --text: #2e3652;
+      --muted: #6a768d;
+    }
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+    }
+    .sidebar {
+      width: 210px;
+      background: var(--sidebar);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .sidebar .logo {
+      font-weight: 700;
+      font-size: 1.3rem;
+      padding: 2rem 1.5rem 1rem 1.5rem;
+      letter-spacing: -1px;
+    }
+    .sidebar nav {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      margin-top: 1rem;
+    }
+    .sidebar nav a {
+      text-decoration: none;
+      color: #cfd8ef;
+      padding: 0.8rem 1.6rem;
+      transition: background .13s;
+      border-left: 4px solid transparent;
+      font-size: 1.06rem;
+      margin-bottom: 2px;
+      border-radius: 0 8px 8px 0;
+    }
+    .sidebar nav a.active, .sidebar nav a:hover {
+      background: var(--sidebar-accent);
+      border-left: 4px solid var(--primary);
+      color: #fff;
+    }
+    .sidebar .logout {
+      padding: 1rem 1.6rem;
+      border-top: 1px solid #2a3257;
+      color: #b9bfff;
+      cursor: pointer;
+      background: none;
+      font-size: 1rem;
+      outline: none;
+      border: none;
+      margin-top: auto;
+      text-align: left;
+    }
+    .main {
+      flex: 1;
+      padding: 2.7rem 2.7rem 2rem 2.7rem;
+      background: var(--bg);
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .headerbar {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--white);
+      padding: 1rem 1.6rem;
+      margin-bottom: 2.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px 0 rgba(46,114,239,.05);
+      border: 1px solid var(--gray);
+    }
+    .calc-wrap {
+      display: flex;
+      justify-content: flex-start;
+    }
+    .calculator {
+      background: var(--white);
+      border-radius: 14px;
+      border: 1px solid var(--gray);
+      box-shadow: 0 2px 18px rgba(46,114,239,0.08);
+      padding: 1.6rem;
+      width: 300px;
+    }
+    .calc-display {
+      background: #f0f4ff;
+      border: 1px solid var(--gray);
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+      text-align: right;
+      margin-bottom: 1.1rem;
+    }
+    .calc-display .expr {
+      font-size: 0.9rem;
+      color: var(--muted);
+      min-height: 1.2em;
+      word-break: break-all;
+    }
+    .calc-display .result {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text);
+      word-break: break-all;
+    }
+    .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+    }
+    .calc-btn {
+      background: var(--gray);
+      border: none;
+      border-radius: 7px;
+      padding: 0.9rem 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      transition: background .12s;
+    }
+    .calc-btn:hover { background: #d0d8f5; }
+    .calc-btn.op { background: #dce8ff; color: var(--primary); }
+    .calc-btn.op:hover { background: #b8ccff; }
+    .calc-btn.eq {
+      background: var(--primary);
+      color: #fff;
+      grid-column: span 2;
+    }
+    .calc-btn.eq:hover { background: #17469a; }
+    .calc-btn.clear { background: #ffe0e0; color: #c0392b; }
+    .calc-btn.clear:hover { background: #ffc0c0; }
+    @media (max-width: 760px) {
+      .sidebar { display: none; }
+      .main { padding: 1rem 1vw; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo">Kash OS</div>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="profile.html">Profile</a>
+      <a href="dashboard.html#applist" class="active">App List</a>
+    </nav>
+    <button class="logout">Log Out</button>
+  </div>
+  <div class="main">
+    <div class="headerbar">
+      <span>🧮 Kash Calculator</span>
+    </div>
+    <div class="calc-wrap">
+      <div class="calculator">
+        <div class="calc-display">
+          <div class="expr" id="expr"></div>
+          <div class="result" id="result">0</div>
+        </div>
+        <div class="calc-grid">
+          <button class="calc-btn clear" onclick="clearAll()">AC</button>
+          <button class="calc-btn op" onclick="toggleSign()">+/−</button>
+          <button class="calc-btn op" onclick="percent()">%</button>
+          <button class="calc-btn op" onclick="inputOp('/')">÷</button>
+
+          <button class="calc-btn" onclick="inputNum('7')">7</button>
+          <button class="calc-btn" onclick="inputNum('8')">8</button>
+          <button class="calc-btn" onclick="inputNum('9')">9</button>
+          <button class="calc-btn op" onclick="inputOp('*')">×</button>
+
+          <button class="calc-btn" onclick="inputNum('4')">4</button>
+          <button class="calc-btn" onclick="inputNum('5')">5</button>
+          <button class="calc-btn" onclick="inputNum('6')">6</button>
+          <button class="calc-btn op" onclick="inputOp('-')">−</button>
+
+          <button class="calc-btn" onclick="inputNum('1')">1</button>
+          <button class="calc-btn" onclick="inputNum('2')">2</button>
+          <button class="calc-btn" onclick="inputNum('3')">3</button>
+          <button class="calc-btn op" onclick="inputOp('+')">+</button>
+
+          <button class="calc-btn" onclick="inputNum('0')" style="grid-column:span 2">0</button>
+          <button class="calc-btn" onclick="inputDot()">.</button>
+          <button class="calc-btn eq" onclick="calculate()">=</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    let current = '0', operand = null, operator = null, reset = false;
+
+    function updateDisplay(expr) {
+      document.getElementById('result').textContent = current;
+      document.getElementById('expr').textContent = expr || '';
+    }
+
+    function inputNum(n) {
+      if (reset) { current = n; reset = false; }
+      else current = current === '0' ? n : current + n;
+      updateDisplay();
+    }
+
+    function inputDot() {
+      if (reset) { current = '0.'; reset = false; return; }
+      if (!current.includes('.')) current += '.';
+      updateDisplay();
+    }
+
+    function inputOp(op) {
+      operand = parseFloat(current);
+      operator = op;
+      reset = true;
+      const sym = {'+':'+', '-':'−', '*':'×', '/':'÷'}[op];
+      updateDisplay(operand + ' ' + sym);
+    }
+
+    function calculate() {
+      if (operator === null || operand === null) return;
+      const b = parseFloat(current);
+      const sym = {'+':'+', '-':'−', '*':'×', '/':'÷'}[operator];
+      const expr = operand + ' ' + sym + ' ' + b + ' =';
+      let res;
+      if (operator === '+') res = operand + b;
+      else if (operator === '-') res = operand - b;
+      else if (operator === '*') res = operand * b;
+      else if (operator === '/') res = b !== 0 ? operand / b : 'Error';
+      current = String(parseFloat(Number(res).toFixed(10)));
+      operator = null; operand = null; reset = true;
+      updateDisplay(expr);
+    }
+
+    function clearAll() {
+      current = '0'; operand = null; operator = null; reset = false;
+      updateDisplay('');
+    }
+
+    function toggleSign() {
+      current = String(parseFloat(current) * -1);
+      updateDisplay();
+    }
+
+    function percent() {
+      current = String(parseFloat(current) / 100);
+      updateDisplay();
+    }
+  </script>
+</body>
+</html>
