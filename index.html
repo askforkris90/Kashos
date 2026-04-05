@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Astro Supabase Starter</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(140deg,#e0eafc,#cfdef3 80%);
+      color: #222;
+    }
+    .center {
+      max-width: 350px;
+      margin: 80px auto;
+      background: rgba(255,255,255,0.93);
+      padding: 2.5rem 2rem 2rem 2rem;
+      border-radius: 18px;
+      box-shadow: 0 6px 32px 0 rgba(65,100,207,0.09);
+      text-align: center;
+    }
+    h1 {
+      font-size: 2.3rem;
+      margin: 0 0 0.5rem;
+    }
+    .tagline {
+      font-size: 1rem;
+      color: #777;
+      margin-bottom: 2rem;
+    }
+    .actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+    .actions a {
+      flex: 1;
+      padding: 0.65rem 0.5rem;
+      text-decoration: none;
+      border-radius: 7px;
+      font-weight: 500;
+      background: #2e72ef;
+      color: white;
+      box-shadow: 0 2px 8px 0 rgba(46,114,239,0.09);
+      transition: background 0.13s;
+    }
+    .actions a.secondary {
+      background: #e6eefa;
+      color: #235fa7;
+    }
+    .actions a:hover {
+      filter: brightness(0.92);
+    }
+    .footer {
+      font-size: 0.9rem;
+      color: #999;
+      margin-top: 2rem;
+    }
+    @media (max-width: 480px) {
+      .center {
+        margin: 40px 7px;
+        max-width: 98vw;
+        padding: 2rem 1rem;
+      }
+      h1 {
+        font-size: 1.45rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="center">
+    <h1>Astro Supabase Starter</h1>
+    <div class="tagline">
+      <b>Modern, Secure Login System.<br>Powered by Astro &amp; Supabase.</b>
+    </div>
+    <div class="actions">
+      <a href="dashboard.html">Sign In</a>
+      <a href="#" class="secondary">Sign Up</a>
+    </div>
+    <div class="footer">
+      © 2026 askforkris90. Powered by Astro • Supabase
+    </div>
+  </div>
+</body>
+</html>
