@@ -1,0 +1,420 @@
+#!/usr/bin/env node
+
+/**
+ * Kashos CLI Tool
+ * Global command-line interface for Kashos Server
+ * Usage: kashos [command] [options]
+ */
+
+const fs = require('fs');
+const path = require('path');
+const { execSync } = require('child_process');
+const readline = require('readline');
+
+// Colors for terminal output
+const colors = {
+  reset: '\x1b[0m',
+  bright: '\x1b[1m',
+  green: '\x1b[32m',
+  yellow: '\x1b[33m',
+  red: '\x1b[31m',
+  blue: '\x1b[34m',
+  cyan: '\x1b[36m'
+};
+
+class KashosCLI {
+  constructor() {
+    this.version = '1.0.0';
+    this.projectDir = process.cwd();
+  }
+
+  log(message, type = 'info') {
+    const prefix = {
+      info: `${colors.blue}ℹ${colors.reset}`,
+      success: `${colors.green}✓${colors.reset}`,
+      warning: `${colors.yellow}⚠${colors.reset}`,
+      error: `${colors.red}✗${colors.reset}`,
+      command: `${colors.cyan}$${colors.reset}`,
+      title: `${colors.bright}${colors.cyan}`
+    };
+
+    if (type === 'title') {
+      console.log(`\n${prefix.title}${message}${colors.reset}\n`);
+    } else {
+      console.log(`${prefix[type] || prefix.info} ${message}`);
+    }
+  }
+
+  exec(command, options = {}) {
+    try {
+      const result = execSync(command, {
+        stdio: options.stdio || 'inherit',
+        cwd: options.cwd || this.projectDir,
+        ...options
+      });
+      return result.toString().trim();
+    } catch (error) {
+      if (options.silent) return null;
+      this.log(`Command failed: ${command}`, 'error');
+      process.exit(1);
+    }
+  }
+
+  showHelp() {
+    this.log('Kashos CLI - Server Management Tool', 'title');
+    
+    console.log(`${colors.bright}Usage:${colors.reset}`);
+    console.log('  kashos <command> [options]\n');
+
+    console.log(`${colors.bright}Commands:${colors.reset}`);
+    console.log('  start              Start the Kashos server');
+    console.log('  dev                Start in development mode (with auto-reload)');
+    console.log('  stop               Stop the running server');
+    console.log('  restart            Restart the server');
+    console.log('  status             Check server status');
+    console.log('  install            Install dependencies');
+    console.log('  logs               View server logs');
+    console.log('  test               Run tests\n');
+
+    console.log(`${colors.bright}Docker Commands:${colors.reset}`);
+    console.log('  docker build       Build Docker image');
+    console.log('  docker run         Run in Docker container');
+    console.log('  docker push        Push to Docker Hub');
+    console.log('  docker compose     Run with Docker Compose\n');
+
+    console.log(`${colors.bright}Kubernetes Commands:${colors.reset}`);
+    console.log('  k8s deploy         Deploy to Kubernetes');
+    console.log('  k8s status         Check Kubernetes deployment status');
+    console.log('  k8s logs           View Kubernetes pod logs');
+    console.log('  k8s scale <num>    Scale replicas');
+    console.log('  k8s delete         Delete Kubernetes deployment\n');
+
+    console.log(`${colors.bright}Package Commands:${colors.reset}`);
+    console.log('  package build      Create distribution package');
+    console.log('  package version    Create versioned package\n');
+
+    console.log(`${colors.bright}API Commands:${colors.reset}`);
+    console.log('  api health         Check API health');
+    console.log('  api docs           Open API documentation');
+    console.log('  api test           Test API endpoints\n');
+
+    console.log(`${colors.bright}Utility Commands:${colors.reset}`);
+    console.log('  config             Show configuration');
+    console.log('  info               Show project information');
+    console.log('  version            Show CLI version');
+    console.log('  help               Show this help message\n');
+
+    console.log(`${colors.bright}Options:${colors.reset}`);
+    console.log('  -h, --help         Show help');
+    console.log('  -v, --version      Show version');
+    console.log('  -q, --quiet        Suppress output\n');
+
+    console.log(`${colors.bright}Examples:${colors.reset}`);
+    console.log('  kashos start');
+    console.log('  kashos dev');
+    console.log('  kashos docker build');
+    console.log('  kashos k8s deploy');
+    console.log('  kashos package build\n');
+  }
+
+  showVersion() {
+    console.log(`Kashos CLI v${this.version}`);
+  }
+
+  showInfo() {
+    this.log('Project Information', 'title');
+    
+    const pkgPath = path.join(this.projectDir, 'package.json');
+    if (fs.existsSync(pkgPath)) {
+      const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+      console.log(`Name: ${pkg.name}`);
+      console.log(`Version: ${pkg.version}`);
+      console.log(`Description: ${pkg.description}`);
+    }
+
+    console.log(`\nProject Directory: ${this.projectDir}`);
+    console.log(`Node Version: ${process.version}`);
+    console.log(`Platform: ${process.platform}`);
+  }
+
+  // Server Commands
+  start() {
+    this.log('Starting Kashos server...', 'info');
+    this.exec('npm start');
+  }
+
+  dev() {
+    this.log('Starting in development mode...', 'info');
+    this.exec('npm run dev');
+  }
+
+  stop() {
+    this.log('Stopping Kashos server...', 'info');
+    this.exec('pkill -f "node server.js"', { stdio: 'pipe' });
+    this.log('Server stopped', 'success');
+  }
+
+  restart() {
+    this.log('Restarting server...', 'info');
+    this.stop();
+    setTimeout(() => this.start(), 1000);
+  }
+
+  status() {
+    this.log('Checking server status...', 'info');
+    try {
+      const result = execSync('curl -s http://localhost:3000/health', { stdio: 'pipe' });
+      const data = JSON.parse(result);
+      this.log(`Server Status: ${data.status}`, 'success');
+      this.log(`Timestamp: ${data.timestamp}`, 'info');
+    } catch (error) {
+      this.log('Server is not running', 'warning');
+    }
+  }
+
+  install() {
+    this.log('Installing dependencies...', 'info');
+    this.exec('npm install');
+    this.log('Dependencies installed', 'success');
+  }
+
+  logs() {
+    this.log('Server logs:', 'info');
+    this.exec('npm start 2>&1 | tail -50');
+  }
+
+  // Docker Commands
+  dockerBuild() {
+    this.log('Building Docker image...', 'info');
+    this.exec('docker build -t kashos:latest .');
+    this.log('Image built successfully', 'success');
+  }
+
+  dockerRun() {
+    this.log('Running Docker container...', 'info');
+    this.exec('docker run -p 3000:3000 -v $(pwd)/uploads:/app/uploads kashos:latest');
+  }
+
+  dockerPush() {
+    this.log('Pushing Docker image...', 'info');
+    const username = process.env.DOCKER_USERNAME || 'askforkris90';
+    this.exec(`docker push ${username}/kashos:latest`);
+    this.log('Image pushed successfully', 'success');
+  }
+
+  dockerCompose() {
+    this.log('Starting with Docker Compose...', 'info');
+    this.exec('docker-compose up -d');
+    this.log('Services started with Docker Compose', 'success');
+    this.log('Access at: http://localhost:3000/public/phone-app.html', 'info');
+  }
+
+  // Kubernetes Commands
+  k8sDeploy() {
+    this.log('Deploying to Kubernetes...', 'info');
+    if (!fs.existsSync('deploy-k8s.sh')) {
+      this.log('deploy-k8s.sh not found', 'error');
+      return;
+    }
+    this.exec('chmod +x deploy-k8s.sh && ./deploy-k8s.sh full');
+  }
+
+  k8sStatus() {
+    this.log('Checking Kubernetes status...', 'info');
+    try {
+      this.exec('kubectl get pods -l app=kashos');
+      this.exec('kubectl get svc kashos-service');
+    } catch (error) {
+      this.log('kubectl not available or no deployment', 'warning');
+    }
+  }
+
+  k8sLogs() {
+    this.log('Kubernetes pod logs:', 'info');
+    this.exec('kubectl logs -l app=kashos -f');
+  }
+
+  k8sScale(replicas) {
+    this.log(`Scaling to ${replicas} replicas...`, 'info');
+    this.exec(`kubectl scale deployment kashos-server --replicas=${replicas}`);
+    this.log('Deployment scaled successfully', 'success');
+  }
+
+  k8sDelete() {
+    this.log('Deleting Kubernetes deployment...', 'warning');
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+
+    rl.question('Are you sure? (yes/no): ', (answer) => {
+      if (answer === 'yes') {
+        this.exec('kubectl delete -f k8s-deployment.yaml');
+        this.log('Deployment deleted', 'success');
+      } else {
+        this.log('Cancelled', 'info');
+      }
+      rl.close();
+    });
+  }
+
+  // Package Commands
+  packageBuild() {
+    this.log('Building distribution package...', 'info');
+    if (!fs.existsSync('package-docker.sh')) {
+      this.log('package-docker.sh not found', 'error');
+      return;
+    }
+    this.exec('chmod +x package-docker.sh && ./package-docker.sh');
+  }
+
+  packageVersion(version) {
+    this.log(`Building versioned package (${version})...`, 'info');
+    if (!fs.existsSync('package-docker.sh')) {
+      this.log('package-docker.sh not found', 'error');
+      return;
+    }
+    this.exec(`chmod +x package-docker.sh && ./package-docker.sh ${version}`);
+  }
+
+  // API Commands
+  apiHealth() {
+    this.log('Checking API health...', 'info');
+    try {
+      const result = execSync('curl -s http://localhost:3000/health');
+      const data = JSON.parse(result);
+      this.log(`Status: ${data.status}`, 'success');
+    } catch (error) {
+      this.log('API is not responding', 'error');
+    }
+  }
+
+  apiDocs() {
+    this.log('Opening API documentation...', 'info');
+    const url = 'http://localhost:3000/api/docs';
+    const platform = process.platform;
+    const command = platform === 'darwin' ? 'open' : 
+                   platform === 'win32' ? 'start' : 'xdg-open';
+    execSync(`${command} ${url}`, { stdio: 'ignore' });
+    this.log(`Opened: ${url}`, 'success');
+  }
+
+  apiTest() {
+    this.log('Testing API endpoints...', 'info');
+    const endpoints = [
+      { name: 'Health', method: 'GET', path: '/health' },
+      { name: 'Files List', method: 'GET', path: '/api/files' },
+      { name: 'API Docs', method: 'GET', path: '/api/docs' }
+    ];
+
+    endpoints.forEach(endpoint => {
+      try {
+        const result = execSync(`curl -s -w "\\n%{http_code}" http://localhost:3000${endpoint.path}`, { stdio: 'pipe' });
+        const lines = result.toString().split('\n');
+        const statusCode = lines[lines.length - 1];
+        const status = statusCode === '200' ? 'success' : 'warning';
+        this.log(`${endpoint.name}: ${statusCode}`, status);
+      } catch (error) {
+        this.log(`${endpoint.name}: Failed`, 'error');
+      }
+    });
+  }
+
+  showConfig() {
+    this.log('Configuration', 'title');
+    console.log(`CLI Version: ${this.version}`);
+    console.log(`Project Directory: ${this.projectDir}`);
+    console.log(`Node Version: ${process.version}`);
+    console.log(`NPM Version: ${execSync('npm -v').toString().trim()}`);
+    
+    try {
+      console.log(`Docker Version: ${execSync('docker -v').toString().trim()}`);
+    } catch (e) {}
+    
+    try {
+      console.log(`Kubectl Version: ${execSync('kubectl version --client --short').toString().trim()}`);
+    } catch (e) {}
+  }
+
+  run(args) {
+    const command = args[0];
+    const subcommand = args[1];
+    const param = args[2];
+
+    switch (command) {
+      case 'start':
+        this.start();
+        break;
+      case 'dev':
+        this.dev();
+        break;
+      case 'stop':
+        this.stop();
+        break;
+      case 'restart':
+        this.restart();
+        break;
+      case 'status':
+        this.status();
+        break;
+      case 'install':
+        this.install();
+        break;
+      case 'logs':
+        this.logs();
+        break;
+      case 'docker':
+        if (subcommand === 'build') this.dockerBuild();
+        else if (subcommand === 'run') this.dockerRun();
+        else if (subcommand === 'push') this.dockerPush();
+        else if (subcommand === 'compose') this.dockerCompose();
+        else this.log('Unknown docker command', 'error');
+        break;
+      case 'k8s':
+        if (subcommand === 'deploy') this.k8sDeploy();
+        else if (subcommand === 'status') this.k8sStatus();
+        else if (subcommand === 'logs') this.k8sLogs();
+        else if (subcommand === 'scale') this.k8sScale(param);
+        else if (subcommand === 'delete') this.k8sDelete();
+        else this.log('Unknown k8s command', 'error');
+        break;
+      case 'package':
+        if (subcommand === 'build') this.packageBuild();
+        else if (subcommand === 'version') this.packageVersion(param);
+        else this.log('Unknown package command', 'error');
+        break;
+      case 'api':
+        if (subcommand === 'health') this.apiHealth();
+        else if (subcommand === 'docs') this.apiDocs();
+        else if (subcommand === 'test') this.apiTest();
+        else this.log('Unknown api command', 'error');
+        break;
+      case 'config':
+        this.showConfig();
+        break;
+      case 'info':
+        this.showInfo();
+        break;
+      case 'version':
+      case '-v':
+      case '--version':
+        this.showVersion();
+        break;
+      case 'help':
+      case '-h':
+      case '--help':
+      case '':
+        this.showHelp();
+        break;
+      default:
+        this.log(`Unknown command: ${command}`, 'error');
+        this.showHelp();
+        process.exit(1);
+    }
+  }
+}
+
+// Main execution
+const cli = new KashosCLI();
+const args = process.argv.slice(2);
+cli.run(args);
