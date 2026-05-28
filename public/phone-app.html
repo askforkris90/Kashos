@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kashos Phone App - File Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .phone-frame {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            border: 10px solid #222;
+            position: relative;
+        }
+
+        .phone-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 25px;
+            background: #222;
+            border-radius: 0 0 20px 20px;
+            z-index: 10;
+        }
+
+        .phone-content {
+            padding: 40px 20px 20px;
+            height: 100vh;
+            overflow-y: auto;
+            background: #f5f5f5;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .upload-area {
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f9f9f9;
+        }
+
+        .upload-area:hover {
+            background: #f0f0ff;
+            border-color: #764ba2;
+        }
+
+        .upload-area input {
+            display: none;
+        }
+
+        .upload-btn, .action-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .upload-btn:hover, .action-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .file-item {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .file-size {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .file-action-btn {
+            padding: 6px 12px;
+            font-size: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .file-action-btn:hover {
+            background: #764ba2;
+        }
+
+        .file-action-btn.delete {
+            background: #e74c3c;
+        }
+
+        .file-action-btn.delete:hover {
+            background: #c0392b;
+        }
+
+        .loading {
+            text-align: center;
+            color: #667eea;
+            margin: 10px 0;
+            display: none;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .status-message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .status-message.active {
+            display: block;
+        }
+
+        .status-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .no-files {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+        }
+
+        .cobra-form {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .cobra-form input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        .cobra-form button {
+            padding: 8px 15px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .cobra-form button:hover {
+            background: #c0392b;
+        }
+
+        @media (max-width: 600px) {
+            .phone-frame {
+                border-width: 5px;
+                border-radius: 20px;
+            }
+
+            .phone-frame::before {
+                width: 100px;
+                height: 20px;
+            }
+
+            .phone-content {
+                padding: 30px 15px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="phone-content">
+            <div class="header">
+                <h1>📱 Kashos App</h1>
+                <p>File Manager & Cobra.com Uploader</p>
+            </div>
+
+            <!-- Upload Section -->
+            <div class="section">
+                <div class="section-title">📤 Upload File</div>
+                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                    <p>📁 Tap to select a file</p>
+                    <input type="file" id="fileInput" onchange="handleFileSelect(event)">
+                </div>
+                <button class="upload-btn" onclick="uploadFile()">Upload to Server</button>
+                <div class="loading" id="uploadLoading">⏳ Uploading...</div>
+                <div class="status-message" id="uploadStatus"></div>
+            </div>
+
+            <!-- Send to Cobra Section -->
+            <div class="section">
+                <div class="section-title">🐍 Send to Cobra.com</div>
+                <div class="upload-area" onclick="document.getElementById('cobraFileInput').click()">
+                    <p>📁 Select file to send to cobra.com</p>
+                    <input type="file" id="cobraFileInput" onchange="handleCobraFileSelect(event)">
+                </div>
+                <div class="cobra-form">
+                    <input type="text" id="cobraPath" placeholder="Target path (default: /)" value="/">
+                    <button onclick="sendToCobra()">Send</button>
+                </div>
+                <div class="loading" id="cobraLoading">⏳ Sending to Cobra...</div>
+                <div class="status-message" id="cobraStatus"></div>
+            </div>
+
+            <!-- Files List Section -->
+            <div class="section">
+                <div class="section-title">📂 Server Files</div>
+                <button class="action-btn" onclick="loadFiles()">🔄 Refresh</button>
+                <div class="loading" id="filesLoading">⏳ Loading files...</div>
+                <div id="filesList"></div>
+            </div>
+
+            <!-- Server Status Section -->
+            <div class="section">
+                <div class="section-title">🔋 Server Status</div>
+                <button class="action-btn" onclick="checkHealth()">✓ Check Status</button>
+                <div id="healthStatus" style="margin-top: 10px; font-size: 14px; color: #666;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedFile = null;
+        let cobraFile = null;
+        const API_URL = `http://${window.location.hostname}:3000`;
+
+        // Handle file selection for upload
+        function handleFileSelect(event) {
+            selectedFile = event.target.files[0];
+            if (selectedFile) {
+                showStatus('uploadStatus', `✓ File selected: ${selectedFile.name}`, 'success');
+            }
+        }
+
+        // Handle file selection for cobra upload
+        function handleCobraFileSelect(event) {
+            cobraFile = event.target.files[0];
+            if (cobraFile) {
+                showStatus('cobraStatus', `✓ File selected: ${cobraFile.name}`, 'success');
+            }
+        }
+
+        // Upload file to server
+        async function uploadFile() {
+            if (!selectedFile) {
+                showStatus('uploadStatus', '❌ Please select a file first', 'error');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+
+            try {
+                showLoading('uploadLoading', true);
+                const response = await fetch(`${API_URL}/api/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showStatus('uploadStatus', `✓ Uploaded: ${data.file.originalName} (${formatSize(data.file.size)})`, 'success');
+                    selectedFile = null;
+                    document.getElementById('fileInput').value = '';
+                    loadFiles();
+                } else {
+                    showStatus('uploadStatus', `❌ Error: ${data.error}`, 'error');
+                }
+            } catch (error) {
+                showStatus('uploadStatus', `❌ Upload failed: ${error.message}`, 'error');
+            } finally {
+                showLoading('uploadLoading', false);
+            }
+        }
+
+        // Send file to cobra.com
+        async function sendToCobra() {
+            if (!cobraFile) {
+                showStatus('cobraStatus', '❌ Please select a file first', 'error');
+                return;
+            }
+
+            const targetPath = document.getElementById('cobraPath').value || '/';
+            const formData = new FormData();
+            formData.append('file', cobraFile);
+            formData.append('targetPath', targetPath);
+
+            try {
+                showLoading('cobraLoading', true);
+                const response = await fetch(`${API_URL}/api/send-to-cobra`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showStatus('cobraStatus', `✓ Sent to Cobra.com: ${data.file.originalName}`, 'success');
+                    cobraFile = null;
+                    document.getElementById('cobraFileInput').value = '';
+                    document.getElementById('cobraPath').value = '/';
+                } else {
+                    showStatus('cobraStatus', `❌ Error: ${data.error}`, 'error');
+                }
+            } catch (error) {
+                showStatus('cobraStatus', `❌ Failed: ${error.message}`, 'error');
+            } finally {
+                showLoading('cobraLoading', false);
+            }
+        }
+
+        // Load files from server
+        async function loadFiles() {
+            try {
+                showLoading('filesLoading', true);
+                const response = await fetch(`${API_URL}/api/files`);
+                const data = await response.json();
+
+                let html = '';
+                if (data.files && data.files.length > 0) {
+                    data.files.forEach(file => {
+                        html += `
+                            <div class="file-item">
+                                <div class="file-info">
+                                    <div class="file-name">📄 ${file.filename}</div>
+                                    <div class="file-size">${formatSize(file.size)} • ${new Date(file.uploadedAt).toLocaleDateString()}</div>
+                                </div>
+                                <div class="file-actions">
+                                    <button class="file-action-btn" onclick="downloadFile('${file.filename}')">⬇️</button>
+                                    <button class="file-action-btn delete" onclick="deleteFile('${file.filename}')">🗑️</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    html = '<div class="no-files">📭 No files uploaded yet</div>';
+                }
+                document.getElementById('filesList').innerHTML = html;
+            } catch (error) {
+                document.getElementById('filesList').innerHTML = `<div class="no-files">❌ Error loading files: ${error.message}</div>`;
+            } finally {
+                showLoading('filesLoading', false);
+            }
+        }
+
+        // Download file
+        function downloadFile(filename) {
+            window.location.href = `${API_URL}/files/${filename}`;
+        }
+
+        // Delete file
+        async function deleteFile(filename) {
+            if (!confirm(`Delete ${filename}?`)) return;
+
+            try {
+                const response = await fetch(`${API_URL}/api/files/${filename}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    loadFiles();
+                } else {
+                    alert('Failed to delete file');
+                }
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+            }
+        }
+
+        // Check server health
+        async function checkHealth() {
+            try {
+                const response = await fetch(`${API_URL}/health`);
+                const data = await response.json();
+                document.getElementById('healthStatus').innerHTML = `
+                    ✅ Server Online<br>
+                    Status: ${data.status}<br>
+                    Time: ${new Date(data.timestamp).toLocaleTimeString()}
+                `;
+            } catch (error) {
+                document.getElementById('healthStatus').innerHTML = `❌ Server Offline`;
+            }
+        }
+
+        // Helper functions
+        function showLoading(id, show) {
+            document.getElementById(id).classList.toggle('active', show);
+        }
+
+        function showStatus(id, message, type) {
+            const elem = document.getElementById(id);
+            elem.textContent = message;
+            elem.className = `status-message active ${type}`;
+        }
+
+        function formatSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        // Load files on page load
+        window.addEventListener('load', () => {
+            checkHealth();
+            loadFiles();
+        });
+    </script>
+</body>
+</html>
