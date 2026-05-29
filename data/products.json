@@ -1,0 +1,185 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Premium Domain Package",
+      "category": "domains",
+      "price": 149.99,
+      "currency": "USD",
+      "certificates": [
+        "ISO-9001",
+        "SSL-Secure"
+      ],
+      "description": "Premium domain registration with SSL certificate and security features",
+      "features": [
+        "Free SSL Certificate",
+        "WHOIS Privacy",
+        "Domain Management Panel",
+        "Email Forwarding"
+      ],
+      "safetyLevel": "high",
+      "rating": 4.8
+    },
+    {
+      "id": 2,
+      "name": "Standard Domain Package",
+      "category": "domains",
+      "price": 99.99,
+      "currency": "USD",
+      "certificates": [
+        "ISO-9001"
+      ],
+      "description": "Standard domain registration with basic security features",
+      "features": [
+        "Basic SSL Certificate",
+        "Domain Management",
+        "Technical Support"
+      ],
+      "safetyLevel": "high",
+      "rating": 4.6
+    },
+    {
+      "id": 3,
+      "name": "Business File Hosting",
+      "category": "hosting",
+      "price": 299.99,
+      "currency": "USD",
+      "certificates": [
+        "ISO-9001",
+        "SOC-2",
+        "CE-Mark",
+        "GDPR-Compliant"
+      ],
+      "description": "Secure file hosting with enterprise-grade security and compliance",
+      "features": [
+        "50GB Storage",
+        "Advanced Encryption",
+        "Automated Backups",
+        "24/7 Monitoring",
+        "Compliance Reports"
+      ],
+      "safetyLevel": "critical",
+      "rating": 4.9
+    },
+    {
+      "id": 4,
+      "name": "Starter File Hosting",
+      "category": "hosting",
+      "price": 79.99,
+      "currency": "USD",
+      "certificates": [
+        "ISO-9001",
+        "SSL-Secure"
+      ],
+      "description": "Affordable file hosting with essential security features",
+      "features": [
+        "10GB Storage",
+        "Standard Encryption",
+        "Email Support",
+        "Monthly Backups"
+      ],
+      "safetyLevel": "high",
+      "rating": 4.4
+    },
+    {
+      "id": 5,
+      "name": "API Integration Package",
+      "category": "api",
+      "price": 199.99,
+      "currency": "USD",
+      "certificates": [
+        "ISO-27001",
+        "OAuth-2.0",
+        "API-Security-Certified"
+      ],
+      "description": "Full API access with secure authentication and rate limiting",
+      "features": [
+        "Unlimited API Calls",
+        "OAuth 2.0 Support",
+        "API Analytics",
+        "Developer Console",
+        "Technical Support"
+      ],
+      "safetyLevel": "high",
+      "rating": 4.7
+    },
+    {
+      "id": 6,
+      "name": "Enterprise Security Suite",
+      "category": "security",
+      "price": 599.99,
+      "currency": "USD",
+      "certificates": [
+        "ISO-9001",
+        "ISO-27001",
+        "SOC-2-Type-II",
+        "HIPAA-Ready",
+        "CE-Mark",
+        "GDPR-Compliant"
+      ],
+      "description": "Comprehensive security solution for enterprise deployments",
+      "features": [
+        "Advanced Threat Protection",
+        "Real-time Monitoring",
+        "Compliance Auditing",
+        "Incident Response",
+        "Priority Support",
+        "Custom Policies"
+      ],
+      "safetyLevel": "critical",
+      "rating": 4.95
+    }
+  ],
+  "certificateDefinitions": {
+    "ISO-9001": {
+      "name": "ISO 9001",
+      "description": "Quality Management System",
+      "icon": "✓"
+    },
+    "ISO-27001": {
+      "name": "ISO 27001",
+      "description": "Information Security Management",
+      "icon": "🔐"
+    },
+    "SSL-Secure": {
+      "name": "SSL Secure",
+      "description": "Secure Socket Layer Encryption",
+      "icon": "🔒"
+    },
+    "SOC-2": {
+      "name": "SOC 2",
+      "description": "Service Organization Control",
+      "icon": "✓"
+    },
+    "SOC-2-Type-II": {
+      "name": "SOC 2 Type II",
+      "description": "Advanced Service Organization Control",
+      "icon": "✓✓"
+    },
+    "CE-Mark": {
+      "name": "CE Mark",
+      "description": "European Conformity",
+      "icon": "⚖️"
+    },
+    "GDPR-Compliant": {
+      "name": "GDPR Compliant",
+      "description": "General Data Protection Regulation",
+      "icon": "🛡️"
+    },
+    "HIPAA-Ready": {
+      "name": "HIPAA Ready",
+      "description": "Health Insurance Portability",
+      "icon": "🏥"
+    },
+    "OAuth-2.0": {
+      "name": "OAuth 2.0",
+      "description": "Open Standard Authorization",
+      "icon": "🔑"
+    },
+    "API-Security-Certified": {
+      "name": "API Security Certified",
+      "description": "Certified API Security",
+      "icon": "🛡️"
+    }
+  }
+}
