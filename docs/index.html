@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kash OS - Modern Dashboard & OS Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        header {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            border-bottom: 3px solid #667eea;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: #ddd;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            background: white;
+            border-radius: 15px;
+            padding: 3rem;
+            margin: 2rem auto;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .hero h2 {
+            color: #667eea;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .pages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .page-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .page-card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .page-card-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-card-body {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-card-desc {
+            color: #666;
+            margin-bottom: 1.5rem;
+            flex: 1;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-small {
+            padding: 10px 20px;
+            font-size: 0.95rem;
+        }
+
+        .features {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 3rem 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .features h2 {
+            color: #667eea;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+
+        .features-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .feature-content h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-content p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-top: 2px solid #667eea;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+        }
+
+        .repo-link {
+            display: inline-block;
+            margin-top: 1rem;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .repo-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .hero {
+                padding: 2rem 1rem;
+            }
+
+            .pages-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🖥️ Kash OS</h1>
+        <p>Modern Dashboard & Operating System Concept Demo</p>
+    </header>
+
+    <div class="container">
+        <div class="hero">
+            <h2>Welcome to Kash OS</h2>
+            <p>A modern, sleek operating system concept featuring a beautiful dashboard, domain suggestion tool, and phone showcase. Explore our collection of pages below.</p>
+        </div>
+
+        <div class="pages-grid">
+            <!-- Dashboard Page -->
+            <div class="page-card">
+                <div class="page-card-header">
+                    <div class="page-card-icon">📊</div>
+                    <h3>Dashboard</h3>
+                </div>
+                <div class="page-card-body">
+                    <p class="page-card-desc">Full-featured dashboard with sidebar navigation, user profile, widgets, and app launcher. Experience the Kash OS interface with a professional layout.</p>
+                    <a href="../dashboard.html" class="btn btn-small">View Dashboard</a>
+                </div>
+            </div>
+
+            <!-- Domain Suggestion Tool -->
+            <div class="page-card">
+                <div class="page-card-header">
+                    <div class="page-card-icon">🌐</div>
+                    <h3>Domain Finder</h3>
+                </div>
+                <div class="page-card-body">
+                    <p class="page-card-desc">Interactive domain name suggestion tool. Enter keywords and instantly get available domain suggestions with a modern, responsive interface.</p>
+                    <a href="../index.html" class="btn btn-small">Try Domain Finder</a>
+                </div>
+            </div>
+
+            <!-- Phone Showcase -->
+            <div class="page-card">
+                <div class="page-card-header">
+                    <div class="page-card-icon">📱</div>
+                    <h3>Kash Phone</h3>
+                </div>
+                <div class="page-card-body">
+                    <p class="page-card-desc">Showcase prototype for the Kash Phone with secure OS and privacy features. Discover the premium device experience with end-to-end encryption.</p>
+                    <a href="../phone.html" class="btn btn-small">View Showcase</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="features">
+            <h2>✨ Key Features</h2>
+            <div class="features-list">
+                <div class="feature-item">
+                    <div class="feature-icon">🎨</div>
+                    <div class="feature-content">
+                        <h3>Modern Design</h3>
+                        <p>Clean, contemporary UI with smooth gradients and responsive layouts that work on all devices.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-content">
+                        <h3>Fast & Lightweight</h3>
+                        <p>Static HTML pages with no dependencies. Lightning-fast loading and optimal performance.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">📱</div>
+                    <div class="feature-content">
+                        <h3>Fully Responsive</h3>
+                        <p>Beautifully adapts to desktop, tablet, and mobile screens for seamless user experience.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">🔒</div>
+                    <div class="feature-content">
+                        <h3>Privacy Focused</h3>
+                        <p>No tracking, no external dependencies. Your data stays with you, always.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">🚀</div>
+                    <div class="feature-content">
+                        <h3>Easy to Customize</h3>
+                        <p>Well-structured HTML/CSS code. Modify colors, layouts, and content easily.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">💡</div>
+                    <div class="feature-content">
+                        <h3>Interactive Tools</h3>
+                        <p>Includes functional tools like domain suggestion engine with real-time API integration.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>Kash OS - Demo Project</strong></p>
+        <p>A modern concept showcasing beautiful UI/UX design</p>
+        <a href="https://github.com/askforkris90/Kashos" class="repo-link">View on GitHub →</a>
+        <p style="margin-top: 1.5rem; color: #999; font-size: 0.9rem;">© 2026 Kash OS | Created by askforkris90</p>
+    </footer>
+</body>
+</html>
