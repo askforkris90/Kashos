@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Dashboard - Kashos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 36px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .kpi-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .kpi-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .kpi-label {
+            color: #999;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .kpi-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .kpi-detail {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .price-summary {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+        }
+
+        .price-summary h2 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        .category-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .category-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            border-radius: 10px;
+            color: white;
+        }
+
+        .category-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-transform: capitalize;
+        }
+
+        .price-stat {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .price-stat:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .stat-label {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+        }
+
+        .chart-container h2 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        .chart {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .chart-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .chart-bar-container {
+            width: 100%;
+            height: 200px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .chart-bar {
+            width: 80%;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            border-radius: 5px 5px 0 0;
+            transition: all 0.3s;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            padding-top: 5px;
+        }
+
+        .chart-bar:hover {
+            background: linear-gradient(180deg, #764ba2 0%, #667eea 100%);
+        }
+
+        .chart-label {
+            text-align: center;
+            color: #333;
+            font-weight: bold;
+            font-size: 14px;
+            text-transform: capitalize;
+        }
+
+        .chart-value {
+            color: #667eea;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .certificates-overview {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+        }
+
+        .certificates-overview h2 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .cert-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.3s;
+        }
+
+        .cert-item:hover {
+            transform: translateX(5px);
+        }
+
+        .cert-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .cert-icon {
+            font-size: 28px;
+        }
+
+        .cert-name {
+            font-weight: bold;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .cert-description {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .cert-count {
+            background: #667eea;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .quick-stats {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+        }
+
+        .quick-stats h2 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .stats-table th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            color: #333;
+            font-weight: bold;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .stats-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            color: #666;
+        }
+
+        .stats-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .category-col {
+            font-weight: bold;
+            color: #667eea;
+            text-transform: capitalize;
+        }
+
+        .price-col {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        button {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button.secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        button.secondary:hover {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            padding: 40px;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            .action-buttons {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-breakdown {
+                grid-template-columns: 1fr;
+            }
+
+            .chart {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💰 Pricing Dashboard</h1>
+            <p class="subtitle">Comprehensive overview of our pricing structure, market analysis, and service offerings with safety certifications</p>
+        </header>
+
+        <div id="loadingDiv" class="loading">
+            ⏳ Loading pricing data...
+        </div>
+
+        <div id="errorDiv"></div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid" id="kpiGrid" style="display: none;">
+            <div class="kpi-card">
+                <div class="kpi-icon">📦</div>
+                <div class="kpi-label">Total Products</div>
+                <div class="kpi-value" id="totalProducts">0</div>
+                <div class="kpi-detail">Available services</div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-icon">💵</div>
+                <div class="kpi-label">Average Price</div>
+                <div class="kpi-value" id="avgPrice">$0</div>
+                <div class="kpi-detail">Across all products</div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-icon">📈</div>
+                <div class="kpi-label">Price Range</div>
+                <div class="kpi-value" id="priceRange">$0-$0</div>
+                <div class="kpi-detail">Min to max pricing</div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-icon">🔐</div>
+                <div class="kpi-label">Certifications</div>
+                <div class="kpi-value" id="totalCerts">0</div>
+                <div class="kpi-detail">Security standards</div>
+            </div>
+        </div>
+
+        <!-- Price Summary by Category -->
+        <div class="price-summary" id="priceSummary" style="display: none;">
+            <h2>📊 Price Summary by Category</h2>
+            <div class="category-breakdown" id="categoryBreakdown"></div>
+        </div>
+
+        <!-- Price Range Chart -->
+        <div class="chart-container" id="chartContainer" style="display: none;">
+            <h2>📈 Price Distribution by Category</h2>
+            <div class="chart" id="priceChart"></div>
+        </div>
+
+        <!-- Certificates Overview -->
+        <div class="certificates-overview" id="certsContainer" style="display: none;">
+            <h2>🔒 Security Certificates Overview</h2>
+            <div class="cert-grid" id="certGrid"></div>
+        </div>
+
+        <!-- Quick Stats Table -->
+        <div class="quick-stats" id="quickStats" style="display: none;">
+            <h2>📋 Quick Reference Table</h2>
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Min Price</th>
+                        <th>Max Price</th>
+                        <th>Average Price</th>
+                        <th>Products</th>
+                    </tr>
+                </thead>
+                <tbody id="statsTableBody"></tbody>
+            </table>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button onclick="window.location.href='products.html'">🛍️ Browse Products</button>
+            <button class="secondary" onclick="window.print()">🖨️ Print Dashboard</button>
+            <button class="secondary" onclick="downloadData()">📥 Download Report</button>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/api';
+        let priceIndexData = {};
+        let allProducts = [];
+        let certificateDefinitions = {};
+
+        // Initialize
+        async function init() {
+            try {
+                await loadPriceIndex();
+                await loadProducts();
+                await loadCertificates();
+                displayDashboard();
+                document.getElementById('loadingDiv').style.display = 'none';
+            } catch (error) {
+                showError('Failed to load dashboard data: ' + error.message);
+            }
+        }
+
+        // Load price index
+        async function loadPriceIndex() {
+            const response = await fetch(`${API_BASE}/price-index`);
+            if (!response.ok) throw new Error('Failed to load price index');
+            
+            const data = await response.json();
+            priceIndexData = data.priceIndex;
+        }
+
+        // Load all products
+        async function loadProducts() {
+            const response = await fetch(`${API_BASE}/products`);
+            if (!response.ok) throw new Error('Failed to load products');
+            
+            const data = await response.json();
+            allProducts = data.products || [];
+        }
+
+        // Load certificates
+        async function loadCertificates() {
+            const response = await fetch(`${API_BASE}/certificates`);
+            if (!response.ok) throw new Error('Failed to load certificates');
+            
+            const data = await response.json();
+            certificateDefinitions = data.certificates || {};
+        }
+
+        // Display dashboard
+        function displayDashboard() {
+            displayKPIs();
+            displayPriceSummary();
+            displayChart();
+            displayCertificates();
+            displayTable();
+
+            // Show all sections
+            document.getElementById('kpiGrid').style.display = 'grid';
+            document.getElementById('priceSummary').style.display = 'block';
+            document.getElementById('chartContainer').style.display = 'block';
+            document.getElementById('certsContainer').style.display = 'block';
+            document.getElementById('quickStats').style.display = 'block';
+        }
+
+        // Display KPIs
+        function displayKPIs() {
+            const allPrices = allProducts.map(p => p.price);
+            const minPrice = Math.min(...allPrices);
+            const maxPrice = Math.max(...allPrices);
+            const avgPrice = (allPrices.reduce((a, b) => a + b, 0) / allPrices.length).toFixed(2);
+
+            document.getElementById('totalProducts').textContent = allProducts.length;
+            document.getElementById('avgPrice').textContent = `$${avgPrice}`;
+            document.getElementById('priceRange').textContent = `$${minPrice.toFixed(2)}-$${maxPrice.toFixed(2)}`;
+            document.getElementById('totalCerts').textContent = Object.keys(certificateDefinitions).length;
+        }
+
+        // Display price summary
+        function displayPriceSummary() {
+            const html = Object.entries(priceIndexData).map(([category, stats]) => `
+                <div class="category-card">
+                    <div class="category-name">${category}</div>
+                    <div class="price-stat">
+                        <span class="stat-label">💰 Min Price:</span>
+                        <span class="stat-value">$${stats.minPrice.toFixed(2)}</span>
+                    </div>
+                    <div class="price-stat">
+                        <span class="stat-label">💵 Max Price:</span>
+                        <span class="stat-value">$${stats.maxPrice.toFixed(2)}</span>
+                    </div>
+                    <div class="price-stat">
+                        <span class="stat-label">📊 Avg Price:</span>
+                        <span class="stat-value">$${stats.avgPrice}</span>
+                    </div>
+                    <div class="price-stat">
+                        <span class="stat-label">📦 Products:</span>
+                        <span class="stat-value">${stats.productCount}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('categoryBreakdown').innerHTML = html;
+        }
+
+        // Display chart
+        function displayChart() {
+            const maxValue = Math.max(...Object.values(priceIndexData).map(s => s.maxPrice));
+            
+            const html = Object.entries(priceIndexData).map(([category, stats]) => {
+                const percentage = (stats.maxPrice / maxValue) * 100;
+                return `
+                    <div class="chart-item">
+                        <div class="chart-bar-container">
+                            <div class="chart-bar" style="height: ${percentage}%;">
+                                $${stats.maxPrice.toFixed(0)}
+                            </div>
+                        </div>
+                        <div class="chart-label">${category}</div>
+                        <div class="chart-value">Avg: $${stats.avgPrice}</div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('priceChart').innerHTML = html;
+        }
+
+        // Display certificates
+        function displayCertificates() {
+            const certCounts = {};
+            
+            // Count products per certificate
+            allProducts.forEach(product => {
+                (product.certificates || []).forEach(cert => {
+                    certCounts[cert] = (certCounts[cert] || 0) + 1;
+                });
+            });
+
+            const html = Object.entries(certificateDefinitions).map(([certId, certDef]) => `
+                <div class="cert-item">
+                    <div class="cert-header">
+                        <span class="cert-icon">${certDef.icon || '✓'}</span>
+                        <span class="cert-name">${certDef.name}</span>
+                    </div>
+                    <div class="cert-description">${certDef.description}</div>
+                    <span class="cert-count">${certCounts[certId] || 0} products</span>
+                </div>
+            `).join('');
+
+            document.getElementById('certGrid').innerHTML = html;
+        }
+
+        // Display table
+        function displayTable() {
+            const html = Object.entries(priceIndexData).map(([category, stats]) => `
+                <tr>
+                    <td class="category-col">${category}</td>
+                    <td class="price-col">$${stats.minPrice.toFixed(2)}</td>
+                    <td class="price-col">$${stats.maxPrice.toFixed(2)}</td>
+                    <td class="price-col">$${stats.avgPrice}</td>
+                    <td>${stats.productCount}</td>
+                </tr>
+            `).join('');
+
+            document.getElementById('statsTableBody').innerHTML = html;
+        }
+
+        // Download data as CSV
+        function downloadData() {
+            let csvContent = "Category,Min Price,Max Price,Avg Price,Products\n";
+            
+            Object.entries(priceIndexData).forEach(([category, stats]) => {
+                csvContent += `${category},${stats.minPrice},${stats.maxPrice},${stats.avgPrice},${stats.productCount}\n`;
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `pricing-dashboard-${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+
+        // Show error
+        function showError(message) {
+            const errorDiv = document.getElementById('errorDiv');
+            errorDiv.innerHTML = `<div class="error">❌ ${message}</div>`;
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
