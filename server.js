@@ -19,6 +19,18 @@ if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
 
+// Load products data
+const productsPath = path.join(__dirname, 'data', 'products.json');
+let productsData = {};
+try {
+    if (fs.existsSync(productsPath)) {
+        productsData = JSON.parse(fs.readFileSync(productsPath, 'utf8'));
+    }
+} catch (error) {
+    console.error('Error loading products data:', error.message);
+    productsData = { products: [], certificateDefinitions: {} };
+}
+
 // Configure multer for file uploads
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -60,6 +72,152 @@ const upload = multer({
 app.get('/health', (req, res) => {
     res.json({ status: 'Server is running', timestamp: new Date() });
 });
+
+// ============ PRODUCT & PRICING ENDPOINTS ============
+
+// Get all products
+app.get('/api/products', (req, res) => {
+    try {
+        const { category, minPrice, maxPrice, sortBy } = req.query;
+        let filteredProducts = [...(productsData.products || [])];
+
+        // Filter by category
+        if (category) {
+            filteredProducts = filteredProducts.filter(p => p.category === category);
+        }
+
+        // Filter by price range
+        if (minPrice) {
+            filteredProducts = filteredProducts.filter(p => p.price >= parseFloat(minPrice));
+        }
+        if (maxPrice) {
+            filteredProducts = filteredProducts.filter(p => p.price <= parseFloat(maxPrice));
+        }
+
+        // Sort by specified field
+        if (sortBy === 'price-asc') {
+            filteredProducts.sort((a, b) => a.price - b.price);
+        } else if (sortBy === 'price-desc') {
+            filteredProducts.sort((a, b) => b.price - a.price);
+        } else if (sortBy === 'rating') {
+            filteredProducts.sort((a, b) => b.rating - a.rating);
+        }
+
+        res.json({
+            success: true,
+            count: filteredProducts.length,
+            products: filteredProducts
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Failed to retrieve products',
+            details: error.message
+        });
+    }
+});
+
+// Get product by ID
+app.get('/api/products/:id', (req, res) => {
+    try {
+        const product = (productsData.products || []).find(p => p.id === parseInt(req.params.id));
+        
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                error: 'Product not found'
+            });
+        }
+
+        res.json({
+            success: true,
+            product: product
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Failed to retrieve product',
+            details: error.message
+        });
+    }
+});
+
+// Get certificate definitions
+app.get('/api/certificates', (req, res) => {
+    try {
+        const certificates = productsData.certificateDefinitions || {};
+        
+        res.json({
+            success: true,
+            count: Object.keys(certificates).length,
+            certificates: certificates
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Failed to retrieve certificates',
+            details: error.message
+        });
+    }
+});
+
+// Get products by certificate
+app.get('/api/products-by-certificate/:certificateId', (req, res) => {
+    try {
+        const { certificateId } = req.params;
+        const productsWithCert = (productsData.products || []).filter(p => 
+            p.certificates && p.certificates.includes(certificateId)
+        );
+
+        res.json({
+            success: true,
+            certificate: certificateId,
+            count: productsWithCert.length,
+            products: productsWithCert
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Failed to retrieve products by certificate',
+            details: error.message
+        });
+    }
+});
+
+// Get price index (min, max, average by category)
+app.get('/api/price-index', (req, res) => {
+    try {
+        const priceIndex = {};
+        const categories = new Set((productsData.products || []).map(p => p.category));
+
+        categories.forEach(category => {
+            const categoryProducts = (productsData.products || []).filter(p => p.category === category);
+            const prices = categoryProducts.map(p => p.price);
+            
+            priceIndex[category] = {
+                minPrice: Math.min(...prices),
+                maxPrice: Math.max(...prices),
+                avgPrice: (prices.reduce((a, b) => a + b, 0) / prices.length).toFixed(2),
+                productCount: categoryProducts.length,
+                currency: categoryProducts[0]?.currency || 'USD'
+            };
+        });
+
+        res.json({
+            success: true,
+            priceIndex: priceIndex,
+            timestamp: new Date()
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Failed to generate price index',
+            details: error.message
+        });
+    }
+});
+
+// ============ FILE UPLOAD ENDPOINTS ============
 
 // File upload endpoint
 app.post('/api/upload', upload.single('file'), (req, res) => {
@@ -238,12 +396,43 @@ app.get('/api/docs', (req, res) => {
     res.json({
         name: 'Kashos Server API',
         version: '1.0.0',
-        description: 'File hosting and management server with cobra.com integration',
+        description: 'File hosting and management server with cobra.com integration and product pricing',
         endpoints: {
             health: {
                 method: 'GET',
                 path: '/health',
                 description: 'Check server health status'
+            },
+            products: {
+                method: 'GET',
+                path: '/api/products',
+                description: 'Get all products with optional filtering',
+                queryParams: {
+                    category: 'Filter by product category',
+                    minPrice: 'Filter by minimum price',
+                    maxPrice: 'Filter by maximum price',
+                    sortBy: 'Sort by: price-asc, price-desc, rating'
+                }
+            },
+            productById: {
+                method: 'GET',
+                path: '/api/products/:id',
+                description: 'Get product by ID'
+            },
+            certificates: {
+                method: 'GET',
+                path: '/api/certificates',
+                description: 'Get all certificate definitions'
+            },
+            productsByCertificate: {
+                method: 'GET',
+                path: '/api/products-by-certificate/:certificateId',
+                description: 'Get all products with a specific certificate'
+            },
+            priceIndex: {
+                method: 'GET',
+                path: '/api/price-index',
+                description: 'Get price index (min, max, average) by category'
             },
             upload: {
                 method: 'POST',
