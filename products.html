@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products & Pricing - Kashos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .controls {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .control-group label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .control-group input,
+        .control-group select {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .control-group input:focus,
+        .control-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            grid-column: 1 / -1;
+            justify-content: center;
+        }
+
+        button {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button.secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        button.secondary:hover {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .price-index {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .price-index.active {
+            display: block;
+        }
+
+        .price-index h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .price-index-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .price-index-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+        }
+
+        .price-index-item strong {
+            color: #333;
+            display: block;
+            margin-bottom: 10px;
+            text-transform: capitalize;
+        }
+
+        .price-index-item span {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            padding: 40px;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .product-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+        }
+
+        .product-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .product-category {
+            font-size: 12px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .product-body {
+            padding: 20px;
+        }
+
+        .product-price {
+            font-size: 28px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .product-currency {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+
+        .stars {
+            color: #ffc107;
+            font-size: 18px;
+        }
+
+        .rating-value {
+            color: #666;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .product-safety-level {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .safety-high {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .safety-critical {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .product-description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            min-height: 40px;
+        }
+
+        .certificates {
+            margin-bottom: 15px;
+        }
+
+        .certificates-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .certificate-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .certificate-badge {
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            padding: 6px 10px;
+            border-radius: 3px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #555;
+        }
+
+        .cert-icon {
+            font-size: 12px;
+        }
+
+        .features {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .features-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .feature-list {
+            list-style: none;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .feature-list li {
+            padding: 4px 0;
+        }
+
+        .feature-list li:before {
+            content: "✓ ";
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .view-details {
+            width: 100%;
+            padding: 10px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .view-details:hover {
+            background: #764ba2;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+            font-size: 18px;
+        }
+
+        .stats {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .stats span {
+            font-size: 18px;
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            float: right;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .modal-close:hover {
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                grid-column: auto;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .product-price {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💼 Products & Pricing</h1>
+            <p class="subtitle">Browse our services with transparent pricing and safety certifications</p>
+        </header>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="categoryFilter">Category:</label>
+                <select id="categoryFilter">
+                    <option value="">All Categories</option>
+                    <option value="domains">Domains</option>
+                    <option value="hosting">Hosting</option>
+                    <option value="api">API</option>
+                    <option value="security">Security</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="minPriceFilter">Min Price ($):</label>
+                <input type="number" id="minPriceFilter" placeholder="0" min="0">
+            </div>
+
+            <div class="control-group">
+                <label for="maxPriceFilter">Max Price ($):</label>
+                <input type="number" id="maxPriceFilter" placeholder="999" min="0">
+            </div>
+
+            <div class="control-group">
+                <label for="sortFilter">Sort By:</label>
+                <select id="sortFilter">
+                    <option value="">Default</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="rating">Highest Rated</option>
+                </select>
+            </div>
+
+            <div class="button-group">
+                <button onclick="applyFilters()">🔍 Apply Filters</button>
+                <button class="secondary" onclick="resetFilters()">↻ Reset</button>
+                <button class="secondary" onclick="togglePriceIndex()">📊 Price Index</button>
+            </div>
+        </div>
+
+        <div id="priceIndexContainer" class="price-index">
+            <h3>📈 Price Index Analysis</h3>
+            <div class="price-index-grid" id="priceIndexContent"></div>
+        </div>
+
+        <div class="stats">
+            <span id="productCount">Loading...</span>
+        </div>
+
+        <div id="loadingDiv" class="loading">
+            ⏳ Loading products...
+        </div>
+
+        <div id="errorDiv"></div>
+
+        <div class="products-grid" id="productsGrid"></div>
+
+        <div id="noResults" class="no-results" style="display: none;">
+            📭 No products found matching your criteria
+        </div>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div id="productModal" class="modal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/api';
+        let allProducts = [];
+        let certificateDefinitions = {};
+
+        // Initialize
+        async function init() {
+            await loadProducts();
+            await loadCertificates();
+            displayProducts(allProducts);
+        }
+
+        // Load all products
+        async function loadProducts() {
+            const loadingDiv = document.getElementById('loadingDiv');
+            loadingDiv.style.display = 'block';
+
+            try {
+                const response = await fetch(`${API_BASE}/products`);
+                if (!response.ok) throw new Error('Failed to load products');
+                
+                const data = await response.json();
+                allProducts = data.products || [];
+                loadingDiv.style.display = 'none';
+            } catch (error) {
+                loadingDiv.style.display = 'none';
+                showError('Failed to load products: ' + error.message);
+            }
+        }
+
+        // Load certificate definitions
+        async function loadCertificates() {
+            try {
+                const response = await fetch(`${API_BASE}/certificates`);
+                if (!response.ok) throw new Error('Failed to load certificates');
+                
+                const data = await response.json();
+                certificateDefinitions = data.certificates || {};
+            } catch (error) {
+                console.error('Failed to load certificates:', error);
+            }
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const category = document.getElementById('categoryFilter').value;
+            const minPrice = parseFloat(document.getElementById('minPriceFilter').value) || 0;
+            const maxPrice = parseFloat(document.getElementById('maxPriceFilter').value) || Infinity;
+            const sortBy = document.getElementById('sortFilter').value;
+
+            let filtered = allProducts.filter(p => {
+                if (category && p.category !== category) return false;
+                if (p.price < minPrice || p.price > maxPrice) return false;
+                return true;
+            });
+
+            if (sortBy === 'price-asc') {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (sortBy === 'price-desc') {
+                filtered.sort((a, b) => b.price - a.price);
+            } else if (sortBy === 'rating') {
+                filtered.sort((a, b) => b.rating - a.rating);
+            }
+
+            displayProducts(filtered);
+        }
+
+        // Reset filters
+        function resetFilters() {
+            document.getElementById('categoryFilter').value = '';
+            document.getElementById('minPriceFilter').value = '';
+            document.getElementById('maxPriceFilter').value = '';
+            document.getElementById('sortFilter').value = '';
+            displayProducts(allProducts);
+        }
+
+        // Display products
+        function displayProducts(products) {
+            const grid = document.getElementById('productsGrid');
+            const noResults = document.getElementById('noResults');
+            const statsDiv = document.querySelector('.stats');
+
+            if (products.length === 0) {
+                grid.innerHTML = '';
+                noResults.style.display = 'block';
+                statsDiv.innerHTML = '<span>No products found</span>';
+                return;
+            }
+
+            noResults.style.display = 'none';
+            statsDiv.innerHTML = `<span>📊 Showing ${products.length} product${products.length !== 1 ? 's' : ''}</span>`;
+
+            grid.innerHTML = products.map(product => createProductCard(product)).join('');
+        }
+
+        // Create product card HTML
+        function createProductCard(product) {
+            const stars = '⭐'.repeat(Math.round(product.rating));
+            const certificateHtml = (product.certificates || [])
+                .map(cert => {
+                    const certDef = certificateDefinitions[cert] || {};
+                    return `<div class="certificate-badge">
+                        <span class="cert-icon">${certDef.icon || '✓'}</span>
+                        <span>${cert}</span>
+                    </div>`;
+                })
+                .join('');
+
+            const featuresHtml = (product.features || [])
+                .map(feature => `<li>${feature}</li>`)
+                .join('');
+
+            return `
+                <div class="product-card" onclick="openModal(${product.id})">
+                    <div class="product-header">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-category">${product.category}</div>
+                    </div>
+                    <div class="product-body">
+                        <div class="product-price">
+                            $${product.price.toFixed(2)}
+                            <span class="product-currency">${product.currency}</span>
+                        </div>
+                        <div class="product-rating">
+                            <span class="stars">${stars}</span>
+                            <span class="rating-value">${product.rating}</span>
+                        </div>
+                        <div class="product-safety-level safety-${product.safetyLevel}">
+                            🛡️ ${product.safetyLevel.toUpperCase()}
+                        </div>
+                        <div class="product-description">${product.description}</div>
+                        <div class="certificates">
+                            <div class="certificates-title">Certifications</div>
+                            <div class="certificate-badges">${certificateHtml}</div>
+                        </div>
+                        <div class="features">
+                            <div class="features-title">Features</div>
+                            <ul class="feature-list">${featuresHtml}</ul>
+                        </div>
+                        <button class="view-details" onclick="event.stopPropagation(); openModal(${product.id})">View Details</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Open modal with product details
+        function openModal(productId) {
+            const product = allProducts.find(p => p.id === productId);
+            if (!product) return;
+
+            const stars = '⭐'.repeat(Math.round(product.rating));
+            const certificateHtml = (product.certificates || [])
+                .map(cert => {
+                    const certDef = certificateDefinitions[cert] || {};
+                    return `<div style="padding: 10px; background: #f0f0f0; border-radius: 3px; margin: 5px 0;">
+                        <strong>${certDef.icon || '✓'} ${cert}</strong><br>
+                        <small>${certDef.description}</small>
+                    </div>`;
+                })
+                .join('');
+
+            const featuresHtml = (product.features || [])
+                .map(feature => `<li>${feature}</li>`)
+                .join('');
+
+            const modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = `
+                <h2>${product.name}</h2>
+                <div style="margin: 20px 0; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 5px;">
+                    <div style="font-size: 28px; font-weight: bold;">$${product.price.toFixed(2)}</div>
+                    <div style="font-size: 12px; opacity: 0.9;">${product.currency}</div>
+                </div>
+                
+                <h3 style="margin-top: 20px; margin-bottom: 10px;">📝 Description</h3>
+                <p>${product.description}</p>
+
+                <h3 style="margin-top: 20px; margin-bottom: 10px;">⭐ Rating</h3>
+                <div style="font-size: 18px;">
+                    ${stars} ${product.rating}/5
+                </div>
+
+                <h3 style="margin-top: 20px; margin-bottom: 10px;">🛡️ Safety Level</h3>
+                <div style="padding: 10px; background: ${product.safetyLevel === 'critical' ? '#f8d7da' : '#d4edda'}; color: ${product.safetyLevel === 'critical' ? '#721c24' : '#155724'}; border-radius: 3px; font-weight: bold;">
+                    ${product.safetyLevel.toUpperCase()}
+                </div>
+
+                <h3 style="margin-top: 20px; margin-bottom: 10px;">✅ Features</h3>
+                <ul class="feature-list">${featuresHtml}</ul>
+
+                <h3 style="margin-top: 20px; margin-bottom: 10px;">🔐 Certifications</h3>
+                <div>${certificateHtml}</div>
+
+                <button style="width: 100%; padding: 12px; margin-top: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;" onclick="alert('Purchase functionality coming soon!')">
+                    💳 Purchase Now
+                </button>
+            `;
+
+            document.getElementById('productModal').classList.add('active');
+        }
+
+        // Close modal
+        function closeModal(event) {
+            if (event && event.target !== document.getElementById('productModal')) return;
+            document.getElementById('productModal').classList.remove('active');
+        }
+
+        // Toggle price index
+        async function togglePriceIndex() {
+            const container = document.getElementById('priceIndexContainer');
+            
+            if (container.classList.contains('active')) {
+                container.classList.remove('active');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/price-index`);
+                if (!response.ok) throw new Error('Failed to load price index');
+                
+                const data = await response.json();
+                const priceIndex = data.priceIndex;
+
+                let html = '';
+                for (const [category, stats] of Object.entries(priceIndex)) {
+                    html += `
+                        <div class="price-index-item">
+                            <strong>${category}</strong>
+                            <span><span>Min Price:</span> <span>$${stats.minPrice.toFixed(2)}</span></span>
+                            <span><span>Max Price:</span> <span>$${stats.maxPrice.toFixed(2)}</span></span>
+                            <span><span>Avg Price:</span> <span>$${stats.avgPrice}</span></span>
+                            <span><span>Products:</span> <span>${stats.productCount}</span></span>
+                        </div>
+                    `;
+                }
+
+                document.getElementById('priceIndexContent').innerHTML = html;
+                container.classList.add('active');
+            } catch (error) {
+                showError('Failed to load price index: ' + error.message);
+            }
+        }
+
+        // Show error
+        function showError(message) {
+            const errorDiv = document.getElementById('errorDiv');
+            errorDiv.innerHTML = `<div class="error">❌ ${message}</div>`;
+            setTimeout(() => {
+                errorDiv.innerHTML = '';
+            }, 5000);
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Initialize on page load
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
