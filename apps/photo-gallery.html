@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photo Gallery - Kash OS</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .app-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .app-header {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .app-header h1 {
+      color: #2e3652;
+    }
+    button {
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .photo-item {
+      aspect-ratio: 1;
+      border-radius: 12px;
+      background: white;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    .photo-item:hover {
+      transform: scale(1.05);
+    }
+    .photo-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+    .photo-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      opacity: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      transition: opacity 0.3s;
+    }
+    .photo-item:hover .photo-overlay {
+      opacity: 1;
+    }
+    .overlay-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: white;
+      color: #f5576c;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="app-header">
+      <div>
+        <h1>📸 Photo Gallery</h1>
+        <p>Share and organize photos with privacy controls</p>
+      </div>
+      <button>+ Upload Photos</button>
+    </div>
+
+    <div class="gallery-grid">
+      <div class="photo-item">
+        <div class="photo-placeholder">🏞️</div>
+        <div class="photo-overlay">
+          <button class="overlay-btn">👁️</button>
+          <button class="overlay-btn">🗑️</button>
+        </div>
+      </div>
+      <div class="photo-item">
+        <div class="photo-placeholder">🌅</div>
+        <div class="photo-overlay">
+          <button class="overlay-btn">👁️</button>
+          <button class="overlay-btn">🗑️</button>
+        </div>
+      </div>
+      <div class="photo-item">
+        <div class="photo-placeholder">🎭</div>
+        <div class="photo-overlay">
+          <button class="overlay-btn">👁️</button>
+          <button class="overlay-btn">🗑️</button>
+        </div>
+      </div>
+      <div class="photo-item">
+        <div class="photo-placeholder">🌲</div>
+        <div class="photo-overlay">
+          <button class="overlay-btn">👁️</button>
+          <button class="overlay-btn">🗑️</button>
+        </div>
+      </div>
+      <div class="photo-item">
+        <div class="photo-placeholder">🏖️</div>
+        <div class="photo-overlay">
+          <button class="overlay-btn">👁️</button>
+          <button class="overlay-btn">🗑️</button>
+        </div>
+      </div>
+      <div class="photo-item">
+        <div class="photo-placeholder">🌃</div>
+        <div class="photo-overlay">
+          <button class="overlay-btn">👁️</button>
+          <button class="overlay-btn">🗑️</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music Stream - Kash OS</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color: white;
+    }
+    .app-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .app-header {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      padding: 2rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(255,255,255,0.2);
+      text-align: center;
+    }
+    .app-header h1 {
+      margin-bottom: 0.5rem;
+      font-size: 2rem;
+    }
+    .player {
+      background: rgba(0,0,0,0.3);
+      padding: 2rem;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      margin-bottom: 2rem;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .album-art {
+      width: 150px;
+      height: 150px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      margin: 0 auto 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+    }
+    .now-playing {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .track-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .track-artist {
+      opacity: 0.8;
+    }
+    .progress-container {
+      margin-bottom: 1.5rem;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+    }
+    .progress-fill {
+      height: 100%;
+      background: white;
+      width: 35%;
+    }
+    .time-display {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    button {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    button:hover {
+      background: rgba(255,255,255,0.3);
+      transform: scale(1.1);
+    }
+    button.play {
+      width: 60px;
+      height: 60px;
+      background: white;
+      color: #1e3c72;
+      font-weight: bold;
+    }
+    .playlist {
+      background: rgba(255,255,255,0.1);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .playlist-title {
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    .song-item {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+    .song-item:hover {
+      opacity: 0.7;
+    }
+    .song-item:last-child {
+      border-bottom: none;
+    }
+    .song-number {
+      min-width: 30px;
+      opacity: 0.6;
+    }
+    .song-info {
+      flex: 1;
+      margin: 0 1rem;
+    }
+    .song-name {
+      font-weight: 600;
+    }
+    .song-artist {
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+    .song-duration {
+      opacity: 0.6;
+      min-width: 40px;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="app-header">
+      <h1>🎵 Music Stream</h1>
+      <p>Stream and discover music with friend recommendations</p>
+    </div>
+
+    <div class="player">
+      <div class="album-art">🎶</div>
+      <div class="now-playing">
+        <div class="track-title">Summer Vibes Mix</div>
+        <div class="track-artist">Curated with Friends</div>
+      </div>
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+        <div class="time-display">
+          <span>1:23</span>
+          <span>3:45</span>
+        </div>
+      </div>
+      <div class="controls">
+        <button>⏮️</button>
+        <button class="play">▶️</button>
+        <button>⏭️</button>
+      </div>
+    </div>
+
+    <div class="playlist">
+      <div class="playlist-title">📋 Up Next</div>
+      <div class="song-item">
+        <div class="song-number">1.</div>
+        <div class="song-info">
+          <div class="song-name">Digital Dreams</div>
+          <div class="song-artist">Synthwave Album</div>
+        </div>
+        <div class="song-duration">3:45</div>
+      </div>
+      <div class="song-item">
+        <div class="song-number">2.</div>
+        <div class="song-info">
+          <div class="song-name">Neon Lights</div>
+          <div class="song-artist">Recommended by Sarah</div>
+        </div>
+        <div class="song-duration">3:12</div>
+      </div>
+      <div class="song-item">
+        <div class="song-number">3.</div>
+        <div class="song-info">
+          <div class="song-name">Midnight Echo</div>
+          <div class="song-artist">Friend Mix - Alex</div>
+        </div>
+        <div class="song-duration">4:02</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

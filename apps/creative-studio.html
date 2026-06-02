@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creative Studio - Kash OS</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .app-container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .app-header {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+    .app-header h1 {
+      color: #2e3652;
+      margin-bottom: 0.5rem;
+    }
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .tool-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .tool-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+    .tool-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    .tool-name {
+      font-weight: 700;
+      color: #2e3652;
+      margin-bottom: 0.5rem;
+    }
+    .tool-desc {
+      color: #6a768d;
+      font-size: 0.9rem;
+    }
+    .editor-section {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+    .editor-section h2 {
+      color: #2e3652;
+      margin-bottom: 1.5rem;
+    }
+    .canvas-area {
+      background: #f8faff;
+      border: 2px dashed #e7eaf6;
+      border-radius: 8px;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      font-size: 2rem;
+    }
+    .button-group {
+      display: flex;
+      gap: 1rem;
+    }
+    button {
+      flex: 1;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 1rem;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(245,87,108,0.3);
+    }
+    .btn-secondary {
+      background: #e7eaf6;
+      color: #2e3652;
+    }
+    .btn-secondary:hover {
+      background: #d0d6f0;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="app-header">
+      <h1>🎨 Creative Studio</h1>
+      <p>Create content with editing tools and filters</p>
+    </div>
+
+    <div class="tools-grid">
+      <div class="tool-card">
+        <div class="tool-icon">✏️</div>
+        <div class="tool-name">Drawing</div>
+        <div class="tool-desc">Create digital art</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon">🎨</div>
+        <div class="tool-name">Painting</div>
+        <div class="tool-desc">Paint with colors</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon">✂️</div>
+        <div class="tool-name">Crop & Edit</div>
+        <div class="tool-desc">Resize and enhance</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon">🎭</div>
+        <div class="tool-name">Filters</div>
+        <div class="tool-desc">Apply visual effects</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon">✨</div>
+        <div class="tool-name">Effects</div>
+        <div class="tool-desc">Add animations</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon">📝</div>
+        <div class="tool-name">Text</div>
+        <div class="tool-desc">Add text overlays</div>
+      </div>
+    </div>
+
+    <div class="editor-section">
+      <h2>Canvas Editor</h2>
+      <div class="canvas-area">Click to create</div>
+      <div class="button-group">
+        <button class="btn-primary">Save Creation</button>
+        <button class="btn-secondary">Share with Friends</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

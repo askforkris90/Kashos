@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - Kash OS</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f7faff;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .app-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .app-header {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+    .app-header h1 {
+      color: #2e3652;
+    }
+    .settings-section {
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+    .section-title {
+      background: #f8faff;
+      padding: 1rem 1.5rem;
+      font-weight: 700;
+      color: #2e3652;
+      border-bottom: 1px solid #e7eaf6;
+    }
+    .setting-item {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #e7eaf6;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .setting-item:last-child {
+      border-bottom: none;
+    }
+    .setting-label {
+      flex: 1;
+    }
+    .setting-name {
+      font-weight: 600;
+      color: #2e3652;
+      margin-bottom: 0.25rem;
+    }
+    .setting-desc {
+      font-size: 0.85rem;
+      color: #6a768d;
+    }
+    .toggle {
+      width: 50px;
+      height: 28px;
+      background: #e7eaf6;
+      border-radius: 14px;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.3s;
+    }
+    .toggle.active {
+      background: #10b981;
+    }
+    .toggle-knob {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 24px;
+      height: 24px;
+      background: white;
+      border-radius: 50%;
+      transition: left 0.3s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .toggle.active .toggle-knob {
+      left: 24px;
+    }
+    select {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #e7eaf6;
+      border-radius: 6px;
+      color: #2e3652;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+    button {
+      padding: 0.75rem 1.5rem;
+      background: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    button:hover {
+      background: #dc2626;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="app-header">
+      <h1>⚙️ Settings</h1>
+      <p>Manage your privacy, notifications, and preferences</p>
+    </div>
+
+    <div class="settings-section">
+      <div class="section-title">🔔 Notifications</div>
+      <div class="setting-item">
+        <div class="setting-label">
+          <div class="setting-name">Push Notifications</div>
+          <div class="setting-desc">Receive notifications from friends and apps</div>
+        </div>
+        <div class="toggle active" onclick="this.classList.toggle('active')"><div class="toggle-knob"></div></div>
+      </div>
+      <div class="setting-item">
+        <div class="setting-label">
+          <div class="setting-name">Email Notifications</div>
+          <div class="setting-desc">Get email updates for important events</div>
+        </div>
+        <div class="toggle" onclick="this.classList.toggle('active')"><div class="toggle-knob"></div></div>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="section-title">🔒 Privacy</div>
+      <div class="setting-item">
+        <div class="setting-label">
+          <div class="setting-name">Profile Visibility</div>
+          <div class="setting-desc">Who can see your profile</div>
+        </div>
+        <select>
+          <option>Friends Only</option>
+          <option>Everyone</option>
+          <option>Private</option>
+        </select>
+      </div>
+      <div class="setting-item">
+        <div class="setting-label">
+          <div class="setting-name">Show Online Status</div>
+          <div class="setting-desc">Let friends see when you're online</div>
+        </div>
+        <div class="toggle active" onclick="this.classList.toggle('active')"><div class="toggle-knob"></div></div>
+      </div>
+      <div class="setting-item">
+        <div class="setting-label">
+          <div class="setting-name">End-to-End Encryption</div>
+          <div class="setting-desc">Encrypt all your messages</div>
+        </div>
+        <div class="toggle active" onclick="this.classList.toggle('active')"><div class="toggle-knob"></div></div>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="section-title">🎨 Appearance</div>
+      <div class="setting-item">
+        <div class="setting-label">
+          <div class="setting-name">Dark Mode</div>
+          <div class="setting-desc">Use dark theme for the interface</div>
+        </div>
+        <div class="toggle" onclick="this.classList.toggle('active')"><div class="toggle-knob"></div></div>
+      </div>
+      <div class="setting-item">
+        <div class="setting-label">
+          <div class="setting-name">Font Size</div>
+          <div class="setting-desc">Adjust text size</div>
+        </div>
+        <select>
+          <option>Small</option>
+          <option selected>Medium</option>
+          <option>Large</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="section-title">⚠️ Danger Zone</div>
+      <div class="setting-item">
+        <div class="setting-label">
+          <div class="setting-name">Delete Account</div>
+          <div class="setting-desc">Permanently delete your account and data</div>
+        </div>
+        <button>Delete</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

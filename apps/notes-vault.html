@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notes Vault - Kash OS</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .app-container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .app-header {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+    .app-header h1 {
+      color: #2e3652;
+      margin-bottom: 1rem;
+    }
+    .header-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .security-badge {
+      background: #10b981;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .controls {
+      display: flex;
+      gap: 1rem;
+    }
+    button {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 1rem;
+    }
+    .btn-new {
+      background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+      color: white;
+    }
+    .btn-new:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(139,92,246,0.3);
+    }
+    .notes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .note-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .note-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+    .note-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+    }
+    .note-title {
+      font-weight: 700;
+      color: #2e3652;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .note-preview {
+      color: #6a768d;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      margin-bottom: 1rem;
+    }
+    .note-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: #6a768d;
+    }
+    .note-actions button {
+      background: #ef4444;
+      color: white;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .note-actions button:hover {
+      background: #dc2626;
+    }
+    .lock-icon {
+      color: #10b981;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="app-header">
+      <h1>📝 Notes Vault</h1>
+      <div class="header-info">
+        <p>Encrypted notes with end-to-end privacy protection</p>
+        <span class="security-badge">🔒 E2E Encrypted</span>
+      </div>
+      <div class="controls">
+        <button class="btn-new" onclick="createNote()">+ New Note</button>
+      </div>
+    </div>
+
+    <div class="notes-grid">
+      <div class="note-card">
+        <div class="note-title">Project Ideas 💡</div>
+        <div class="note-preview">Ideas for the new Kashos features and improvements...</div>
+        <div class="note-footer">
+          <span><span class="lock-icon">🔒</span> June 2</span>
+          <button onclick="deleteNote()">Delete</button>
+        </div>
+      </div>
+
+      <div class="note-card">
+        <div class="note-title">Personal Goals 🎯</div>
+        <div class="note-preview">2026 Goals: Build amazing products, connect with friends...</div>
+        <div class="note-footer">
+          <span><span class="lock-icon">🔒</span> May 28</span>
+          <button onclick="deleteNote()">Delete</button>
+        </div>
+      </div>
+
+      <div class="note-card">
+        <div class="note-title">Meeting Notes 📋</div>
+        <div class="note-preview">Key points from team meeting about product roadmap...</div>
+        <div class="note-footer">
+          <span><span class="lock-icon">🔒</span> May 25</span>
+          <button onclick="deleteNote()">Delete</button>
+        </div>
+      </div>
+
+      <div class="note-card">
+        <div class="note-title">Travel Plans ✈️</div>
+        <div class="note-preview">Summer trip planning: destinations, dates, budget...</div>
+        <div class="note-footer">
+          <span><span class="lock-icon">🔒</span> May 20</span>
+          <button onclick="deleteNote()">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function createNote() {
+      alert('Note creation interface would appear here');
+    }
+    function deleteNote() {
+      alert('Note deleted securely');
+    }
+  </script>
+</body>
+</html>
